@@ -1,0 +1,108 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.prompt // .user_prompt // .message // empty' | grep -iqE 'plan this|let.s plan|write a plan|before we build|/plan|plan it|plan mode' && printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"AUTO-INVOKE plan-template: Read .claude/skills/plan-template/SKILL.md and conform any plan you write to its 6-section structure (1.Context / 2.Mock-Execution / 3.Failure-Modes / 4.Verification / 5.Rollback / 6.Bug-pair-check). No empty sections. No TBDs in Failure Modes or Rollback. Pre-seed section 3 from the most recent wiki/engineering/session-codify/ artifact open half-bridges if one exists.\"}}' || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.prompt // .user_prompt // .message // empty' | grep -iqE 'new (service|router|endpoint|file in backend)|schema migration|alembic|requirements\\.txt|irreversible|force.push|force push|delete.*prod|drop (table|column|index)|deploy' && printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"UserPromptSubmit\",\"additionalContext\":\"AUTO-INVOKE /redteam: prompt matches trigger conditions (new service / schema migration / irreversible action / deploy). Run /redteam N=2 passes BEFORE writing the plan.\"}}' || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "echo \"{\\\"ts\\\":\\\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\\\",\\\"event\\\":\\\"UserPromptSubmit\\\"}\" >> \"$HOME/.claude/hook-trace-$(date +%Y-%m-%d).jsonl\" 2>/dev/null; true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "MEM=\"$HOME/.claude/projects/preflight7-state.md\"; if [ -f \"$MEM\" ] && pwd | grep -q preflight7; then jq -Rs --rawfile m \"$MEM\" '{hookSpecificOutput:{hookEventName:\"SessionStart\",additionalContext:(\"Project state pre-loaded from ~/.claude/projects/preflight7-state.md. Do NOT re-derive any fact below; cite this file when referencing project state.\\n\\n\" + $m)}}' <<< '' 2>/dev/null; fi || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "echo \"{\\\"ts\\\":\\\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\\\",\\\"event\\\":\\\"SessionStart\\\"}\" >> \"$HOME/.claude/hook-trace-$(date +%Y-%m-%d).jsonl\" 2>/dev/null; true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionEnd\",\"additionalContext\":\"AUTO-INVOKE CHECK session-codify: Evaluate trigger conditions per CLAUDE.md item 4 (PR merged this session, bug filed/closed, files touched in implementation, user said wrap/done/close). If ANY condition holds and no artifact exists yet in wiki/engineering/session-codify/ for today, write one following .claude/skills/session-codify/SKILL.md before stopping. Skip only for pure-research session or explicit no-codify.\"}}'",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "echo \"{\\\"ts\\\":\\\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\\\",\\\"event\\\":\\\"SessionEnd\\\"}\" >> \"$HOME/.claude/hook-trace-$(date +%Y-%m-%d).jsonl\" 2>/dev/null; true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -e 'true' >/dev/null 2>&1; if [ \"$(ls /Users/prashant/Documents/preflight7_core/wiki/engineering/session-codify/ 2>/dev/null | grep -c $(date +%Y-%m-%d) 2>/dev/null)\" = \"0\" ]; then printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"Stop\",\"additionalContext\":\"REMINDER: No session-codify artifact written today. If this session had a PR merge, bug closed, or 3+ files touched, run session-codify before final stop. Check .claude/skills/session-codify/SKILL.md.\"}}'; fi || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "echo \"{\\\"ts\\\":\\\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\\\",\\\"event\\\":\\\"Stop\\\"}\" >> \"$HOME/.claude/hook-trace-$(date +%Y-%m-%d).jsonl\" 2>/dev/null; true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "EnterPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"AUTO-INVOKE plan-template (V14 hook): Plan mode just activated. Read .claude/skills/plan-template/SKILL.md and conform your plan to its 7-section structure (§0 Pre-flight grep / §1 Context / §2 Mock-Execution / §2.5 Probes / §3 Failure-Modes / §4 Verification / §5 Rollback). For research/audit tasks §2-§5 may be abbreviated. Pre-seed §3 from most recent wiki/engineering/session-codify/ open half-bridges if one exists.\"}}'",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "echo \"{\\\"ts\\\":\\\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\\\",\\\"event\\\":\\\"PostToolUse\\\",\\\"matcher\\\":\\\"EnterPlanMode\\\"}\" >> \"$HOME/.claude/hook-trace-$(date +%Y-%m-%d).jsonl\" 2>/dev/null; true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // empty' | grep -iqE 'alembic (upgrade|downgrade)|drop (table|column|index|schema|database)|(^|[^-])force[ -]push|push.*--force[^-]|git push.*-f([^a-z]|$)|rm -rf .*\\.(claude|git)|truncate ' && printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"additionalContext\":\"AUTO-INVOKE /redteam (V14 hook): Bash command matches schema-migration/irreversible-action pattern. Run /redteam N=2 BEFORE executing this command. Triggers: alembic upgrade/downgrade, drop table/column/index/schema, force push (--force-with-lease excluded), rm -rf .claude/.git, truncate.\"}}' || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "echo \"{\\\"ts\\\":\\\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\\\",\\\"event\\\":\\\"PreToolUse\\\",\\\"matcher\\\":\\\"Bash\\\"}\" >> \"$HOME/.claude/hook-trace-$(date +%Y-%m-%d).jsonl\" 2>/dev/null; true",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "agentPushNotifEnabled": true
+}

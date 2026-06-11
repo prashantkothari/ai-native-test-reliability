@@ -1,0 +1,42 @@
+# Personal Claude Code config — version-controlled subset
+# Tracks: skills, settings.json, projects/preflight7-state.md (memory)
+# Ignores: transcripts, traces, ephemeral state
+
+# Session transcripts (gigabytes, ephemeral)
+projects/-Users-*/
+projects/*/*.jsonl
+projects/*/subagents/
+projects/*/tool-results/
+projects/*/memory/
+
+# Hook traces (daily files, ephemeral)
+hook-trace-*.jsonl
+
+# Plans (personal, may contain WIP)
+plans/
+
+# Caches and runtime state
+.Trash/
+*.cache
+*.log
+shell-snapshots/
+todos/
+statsig/
+ide/
+mcp/
+oauth/
+
+# Local-only settings
+settings.local.json
+.credentials.json
+
+# Plugin / agent caches
+plugins/
+agents/
+auto-memory/
+auto-dream/
+
+# Editor noise
+.DS_Store
+*.swp
+*~
