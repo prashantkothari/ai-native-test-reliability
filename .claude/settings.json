@@ -58,7 +58,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "jq -e 'true' >/dev/null 2>&1; if [ \"$(ls /Users/prashant/Documents/preflight7_core/wiki/engineering/session-codify/ 2>/dev/null | grep -c $(date +%Y-%m-%d) 2>/dev/null)\" = \"0\" ]; then printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"Stop\",\"additionalContext\":\"REMINDER: No session-codify artifact written today. If this session had a PR merge, bug closed, or 3+ files touched, run session-codify before final stop. Check .claude/skills/session-codify/SKILL.md.\"}}'; fi || true",
+            "command": "TODAY=$(date +%Y-%m-%d); LOCAL=$(ls /Users/prashant/Documents/preflight7_core/wiki/engineering/session-codify/ 2>/dev/null | grep -c \"$TODAY\"); GIT=$(git -C /Users/prashant/Documents/preflight7_core log origin/main --since=midnight --oneline -- wiki/engineering/session-codify/ 2>/dev/null | wc -l | tr -d ' '); if [ \"$LOCAL\" = \"0\" ] && [ \"${GIT:-0}\" = \"0\" ]; then printf '%s' '{\"hookSpecificOutput\":{\"hookEventName\":\"Stop\",\"additionalContext\":\"REMINDER: No session-codify artifact written today. If this session had a PR merge, bug closed, or 3+ files touched, run session-codify before final stop. Check .claude/skills/session-codify/SKILL.md.\"}}'; fi || true",
             "timeout": 5
           },
           {
