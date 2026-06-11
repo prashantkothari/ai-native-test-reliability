@@ -32,5 +32,10 @@ _Maintained by `session-codify` §N "Project-state delta". Update only on user a
 - B6 type contract: `frontend/src/types/generated.ts` is the source of truth; do NOT hand-write FE types
 - G14 worktree hygiene: edit main repo for files uvicorn opens at any point; worktrees for hot-reload-only files
 
+## Skills & process
+- **Active skills (7):** `diagnose` / `grill-me` / `pattern-promoter` / `plan-template` / `redteam` / `session-codify` / `ship` (archived: 7 `code-review-*` skills moved to `.archived-skills/2026-06-11/` — `/ship` Step 1 covers per-domain review)
+- **Plan-template amendments (1–9):** Amendment 9 (2026-06-11) = verb-probe — for every action verb in §2, write a 3-line probe BEFORE the implementation commit (SQL / WebFetch / grep). Catches the wrong-premise class (vector_score, workspaces.tenant_id, sources.py, AGE-on-Azure, css probe type — 5 redesigns in 4 days).
+- **Metrics:** `scripts/skills_metrics.py` — subcommands `session <jsonl>` / `plan <md>` / `codify <md>` / `redesigns <glob>`. Run after major PRs to measure before/after.
+
 ---
-_Last verified by codify session: (initial install — 2026-06-11)_
+_Last verified by codify session: 2026-06-11 (PR #926 + #931 skills rationalization + Amendment 9)_
