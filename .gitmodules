@@ -1,0 +1,3 @@
+[submodule "experiment/lib"]
+	path = experiment/lib
+	url = https://github.com/prashantkothari/ai-for-qa.git
