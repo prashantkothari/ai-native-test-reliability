@@ -21,6 +21,8 @@ import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
 import { chromium } from 'playwright';
 import { runTrial, injectLibrary } from './selfheal-playwright-runtime.js';
+import { translateBestLocator } from './translate-locator.js';
+import { identityOf } from './identity.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -66,37 +68,6 @@ function targetClean() {
   return s === '';
 }
 
-async function identityOf(page, locatorSel, useGetByRole = false, ariaName = RECORDED_ARIA_NAME) {
-  try {
-    if (useGetByRole) {
-      return await page.evaluate((name) => {
-        const btns = document.querySelectorAll('button, [role="button"], [role="link"]');
-        for (const el of btns) {
-          const aria = el.getAttribute('aria-label') || '';
-          if (aria === name) {
-            const tag = el.tagName.toLowerCase();
-            const role = el.getAttribute('role') || 'button';
-            const acc = aria || (el.textContent || '').trim().slice(0, 64);
-            const txt = (el.textContent || '').trim().slice(0, 64);
-            return { seed: `${tag}|${role}|${acc}|${txt}`, found: true };
-          }
-        }
-        return { seed: null, found: false };
-      }, ariaName);
-    } else {
-      return await page.evaluate((sel) => {
-        const el = document.querySelector(sel);
-        if (!el) return { seed: null, found: false };
-        const tag = el.tagName.toLowerCase();
-        const role = el.getAttribute('role') || (tag === 'button' ? 'button' : '');
-        const aria = el.getAttribute('aria-label') || '';
-        const txt = (el.textContent || '').trim().slice(0, 64);
-        const acc = aria || txt;
-        return { seed: `${tag}|${role}|${acc}|${txt}`, found: true };
-      }, locatorSel);
-    }
-  } catch { return { seed: null, found: false }; }
-}
 const hash = (seed) => seed ? crypto.createHash('sha1').update(seed).digest('hex').slice(0, 12) : null;
 
 async function warm(page) {
@@ -131,9 +102,11 @@ async function runL(browser, drift, run) {
     const step = row._trial_meta?.steps?.[0];
     healedSelector = step?.bestLocator || null;
     if (healedSelector) {
-      const isRole = healedSelector.startsWith('role=');
-      const id = await identityOf(page, isRole ? null : healedSelector, isRole);
-      identity = hash(id.seed);
+      try {
+        const loc = translateBestLocator(page, healedSelector);
+        const id = await identityOf(loc);
+        identity = hash(id.seed);
+      } catch { /* leave identity null */ }
     }
   } catch (e) {
     outcome = 'FAILED'; diagnosis = 'exception: ' + e.message;
@@ -149,7 +122,7 @@ async function runN(browser, drift, run) {
   try {
     await warm(page);
     const loc = page.getByRole('button', { name: RECORDED_ARIA_NAME });
-    const id0 = await identityOf(page, null, true);
+    const id0 = await identityOf(loc);
     identity = hash(id0.seed);
     const { verifyPassed: vp } = await verifyToggle(page, async () => {
       await loc.click({ timeout: 5000 });
@@ -175,7 +148,7 @@ async function runS(browser, drift, run) {
   try {
     await warm(page);
     const loc = page.locator(RECORDED_SELECTOR);
-    const id0 = await identityOf(page, RECORDED_SELECTOR, false);
+    const id0 = await identityOf(loc);
     identity = hash(id0.seed);
     await loc.click({ timeout: 5000 });
     outcome = 'PASS'; diagnosis = 'strict selector still resolved';
