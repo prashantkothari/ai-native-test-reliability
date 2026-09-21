@@ -22,14 +22,14 @@ import { runTrial, injectLibrary } from './selfheal-playwright-runtime.js';
 // Load the library's UMD/IIFE schema files into a shared vm context so their
 // `globalThis.SELFHEAL_*` assignments take effect. `require()` would fail here
 // because package.json has `"type": "module"`, which nixes CJS resolution of
-// bare `.js` files under lib/.
+// bare `.js` files under self-heal/.
 const _libCtx = vm.createContext({});
 function _loadLib(rel) {
   const abs = path.resolve(new URL('.', import.meta.url).pathname, '..', rel);
   vm.runInContext(fs.readFileSync(abs, 'utf8'), _libCtx, { filename: rel });
 }
-_loadLib('lib/self-heal/schemas/validator.js');
-_loadLib('lib/self-heal/schemas/flywheel-event.schema.js');
+_loadLib('self-heal/schemas/validator.js');
+_loadLib('self-heal/schemas/flywheel-event.schema.js');
 const VALIDATOR = _libCtx.SELFHEAL_VALIDATOR;
 const SCHEMA = _libCtx.SELFHEAL_SCHEMA_FLYWHEEL;
 if (!VALIDATOR || typeof VALIDATOR.validate !== 'function') {
@@ -48,7 +48,14 @@ fs.mkdirSync(path.dirname(trialsFile), { recursive: true });
 fs.mkdirSync(screenshotDir, { recursive: true });
 fs.writeFileSync(trialsFile, '');
 
-const libSha = execSync('git -C lib rev-parse HEAD', { cwd: ROOT }).toString().trim();
+const libSha = fs.readFileSync(path.join(ROOT, 'SELFHEAL_VERSION'), 'utf8').trim();
+
+if (!fs.existsSync(path.join(ROOT, 'target_repo', '.git'))) {
+  throw new Error(
+    `Missing ${path.join(ROOT, 'target_repo')} — see README for the one-time setup step ` +
+    `(git clone the target app there and checkout the pinned SHA).`
+  );
+}
 const targetSha = execSync('git -C target_repo rev-parse HEAD', { cwd: ROOT }).toString().trim();
 
 const PREP_PATCH = path.resolve(ROOT, 'mutations/prep_aria.patch');

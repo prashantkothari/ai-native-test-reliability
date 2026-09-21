@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const LIB = path.resolve(__dirname, '..', 'lib');
+const LIB = path.resolve(__dirname, '..');
 const OUT = path.resolve(__dirname, '..', 'logs', 'selfheal-bundle.js');
 
 const files = [
