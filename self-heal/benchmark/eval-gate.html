@@ -1,0 +1,140 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>S4 — self-heal benchmark eval-gate (false-heal cannot regress)</title>
+<style>
+  body{font:13px/1.5 ui-sans-serif,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
+  h1{font-size:16px}h2{font-size:13px;margin:14px 0 4px}
+  #wrap{display:flex;gap:20px;align-items:flex-start}
+  #benchStage{position:relative;width:460px;min-height:360px;border:1px solid #ccc;border-radius:8px;padding:14px;background:#fff;overflow:hidden}
+  #benchStage h2{font-size:15px;margin:6px 0}#benchStage h3{font-size:14px;margin:0 0 8px}
+  #benchStage .inp{display:block;width:100%;margin:6px 0;padding:6px;border:1px solid #bbb;border-radius:5px}
+  #benchStage button{padding:6px 10px;border:1px solid #888;border-radius:5px;background:#f3f3f3;cursor:pointer;margin:3px 4px 3px 0}
+  #benchStage .btn.primary{background:#137333;color:#fff;border-color:#137333}
+  #benchStage [data-oracle=pay]{background:#137333;color:#fff;border-color:#137333}
+  #benchStage .card-row{display:flex;gap:8px;align-items:center;border:1px solid #eee;border-radius:6px;padding:6px;margin:4px 0}
+  #benchStage .card-row span{flex:1}
+  #benchStage .dropdown{border:1px solid #bbb;border-radius:5px;padding:6px;cursor:pointer;width:200px}
+  #benchStage .opt{padding:6px 10px;cursor:pointer}
+  #benchStage .lbl{display:block;margin:6px 0}
+  #out{flex:1;min-width:560px}
+  .ok{color:#137333}.bad{color:#c5221f;font-weight:bold}.warn{color:#b06000}
+  table{border-collapse:collapse;margin:6px 0;width:100%}td,th{border:1px solid #ddd;padding:4px 7px;font-size:12px;text-align:left;vertical-align:top}
+  .banner{font-size:19px;font-weight:bold;padding:10px 16px;border-radius:8px;display:inline-block;margin:8px 0}
+  .GO{background:#e6f4ea;color:#137333}.FAIL{background:#fdecea;color:#c5221f}
+  .heal{color:#137333}.abstain{color:#b06000}.fail{color:#c5221f}.ERROR{color:#fff;background:#c5221f;font-weight:bold}
+  .match-yes{color:#137333;font-weight:bold}.match-no{color:#c5221f;font-weight:bold}
+  .regress{background:#fdecea}
+  pre{background:#f6f6f6;padding:8px;white-space:pre-wrap;max-height:40vh;overflow:auto;font-size:11px}
+  small{color:#777}
+</style></head>
+<body>
+<h1>S4 — self-heal benchmark eval-gate</h1>
+<p><small>Corpus pulled from <code>pretotype/fixtures.js</code> (login) + <code>pretotype/payment-fixtures.js</code>
+(complex payment screen) — no new fixtures authored here. REAL: <code>selfheal-core.js</code> · <code>pipeline/*</code>.
+Result exposed at <code>window.__BENCH_RESULT</code>.</small></p>
+<div id="status">loading…</div>
+<div id="wrap">
+  <div><h2>Mount point (#benchStage — reused per case)</h2><div id="benchStage"></div></div>
+  <div id="out"></div>
+</div>
+
+<script src="../../selfheal-core.js"></script>
+<script src="../pipeline/candidate-generation.js"></script>
+<script src="../pipeline/change-diagnosis.js"></script>
+<script src="../pipeline/failure-reporter.js"></script>
+<script src="../pretotype/fixtures.js"></script>
+<script src="../pretotype/payment-fixtures.js"></script>
+<script src="../schemas/validator.js"></script>
+<script src="../schemas/flywheel-event.schema.js"></script>
+<script src="../schemas/false-heal.js"></script>
+<script src="corpus.js"></script>
+<script src="eval-gate.js"></script>
+<script>
+(async function () {
+  const status = document.getElementById('status'), out = document.getElementById('out');
+  const esc = s => String(s == null ? '' : s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+
+  const missing = ['SELFHEAL', 'SELFHEAL_DIAGNOSIS', 'SELFHEAL_CANDGEN', 'SELFHEAL_FALSEHEAL', 'PRETOTYPE_FIXTURES',
+    'PAYMENT_FIXTURES', 'SELFHEAL_BENCHMARK_CORPUS', 'SELFHEAL_BENCHMARK'].filter(k => !window[k]);
+  if (missing.length) {
+    status.innerHTML = '<b class="bad">Scripts did not load (' + missing.join(', ') + ' undefined).</b>';
+    out.innerHTML = '<p>This page must be served over http (relative &lt;script src&gt; paths do not resolve from a ' +
+      'file:/data: URL). Run a static server from the worktree root and open:<br>' +
+      '<code>http://127.0.0.1:8791/self-heal/benchmark/eval-gate.html</code></p>';
+    return;
+  }
+
+  try {
+    const corpus = window.SELFHEAL_BENCHMARK_CORPUS;
+    const excluded = window.SELFHEAL_BENCHMARK_EXCLUDED || [];
+
+    // baseline.json is the "last known good" snapshot (generated FROM a clean run — see BENCHMARK-RUN.md).
+    // Fetched, not <script>-loaded, since it is plain JSON, not a global-setting script.
+    let baseline = null, baselineError = null;
+    try {
+      const resp = await fetch('baseline.json', { cache: 'no-store' });
+      if (resp.ok) baseline = await resp.json();
+      else baselineError = 'baseline.json HTTP ' + resp.status;
+    } catch (e) { baselineError = String(e); }
+
+    const result = window.SELFHEAL_BENCHMARK.runBenchmark(corpus, document, baseline);
+    const decision = (result.falseHealCount === 0 && result.regressions.length === 0) ? 'GO' : 'FAIL';
+    window.__BENCH_RESULT = Object.assign({ decision, baselineLoaded: !!baseline, baselineError, excluded }, result);
+
+    let h = '<div class="banner ' + decision + '">EVAL-GATE: ' + decision + '</div> ';
+    h += '<span class="' + (result.falseHealCount === 0 ? 'ok' : 'bad') + '">false-heal = ' + result.falseHealCount + ' / ' + result.totalCases + ' (ceiling 0)</span>'
+       + ' &nbsp; <span class="' + (result.matchCount === result.totalCases ? 'ok' : 'warn') + '">match = ' + result.matchCount + ' / ' + result.totalCases + '</span>'
+       + ' &nbsp; <span class="' + (result.regressions.length === 0 ? 'ok' : 'bad') + '">regressions vs baseline = ' + result.regressions.length + '</span>';
+    if (!baseline) h += ' &nbsp; <span class="warn">(no baseline.json loaded' + (baselineError ? ': ' + esc(baselineError) : '') + ' — regression check skipped)</span>';
+
+    h += '<h2>Per-case diff — expected vs baseline vs actual</h2>';
+    h += '<table><tr><th>case</th><th>source</th><th>expected</th><th>baseline</th><th>actual</th><th>false-heal</th><th>status</th></tr>';
+    const baseById = {};
+    if (baseline && baseline.results) baseline.results.forEach(b => baseById[b.id] = b);
+    result.results.forEach(r => {
+      const b = baseById[r.id];
+      const baselineCell = b ? (b.actualVerdict + ' / ' + b.actualCategory) : '<small>—</small>';
+      const isRegression = result.regressions.some(g => g.id === r.id);
+      h += '<tr class="' + (isRegression ? 'regress' : '') + '"><td><b>' + esc(r.id) + '</b><br><small>' + esc(r.note || '') + '</small></td>'
+         + '<td><small>' + esc(r.source) + '</small></td>'
+         + '<td>' + esc(r.expectedVerdict) + ' / ' + esc(r.expectedCategory) + '</td>'
+         + '<td>' + esc(baselineCell) + '</td>'
+         + '<td class="' + esc(r.actualVerdict) + '">' + esc(r.actualVerdict) + ' / ' + esc(r.actualCategory)
+         + (r.error ? ('<br><small class="bad">' + esc(r.error) + '</small>') : '') + '</td>'
+         + '<td class="' + (r.falseHeal ? 'bad' : '') + '">' + (r.falseHeal ? 'YES — resolved ' + esc(r.resolvedOracle) + ' vs oracle ' + esc(r.oracle) : '—') + '</td>'
+         + '<td class="' + (r.match ? 'match-yes' : 'match-no') + '">' + (r.match ? '✓ match' : '✗ MISMATCH') + '</td></tr>';
+    });
+    h += '</table>';
+
+    if (excluded.length) {
+      h += '<h2>Documented exclusions (traceability — not run, see corpus.js)</h2><ul>';
+      excluded.forEach(x => { h += '<li><b>' + esc(x.source) + '</b> (expected ' + esc(x.expectedFinal) + '/' + esc(x.expectedCategory) + '): <small>' + esc(x.reason) + '</small></li>'; });
+      h += '</ul>';
+    }
+
+    if (result.regressions.length) {
+      h += '<h2 class="bad">Regressions vs baseline.json</h2><pre class="bad">' + esc(JSON.stringify(result.regressions, null, 1)) + '</pre>';
+    } else {
+      h += '<h2>Regressions vs baseline.json</h2><p class="ok">none' + (baseline ? '' : ' (no baseline loaded)') + '</p>';
+    }
+
+    // Optional flywheel-event/v1 export + schema validation (self-heal/schemas/*) — see eval-gate.js.
+    if (window.SELFHEAL_BENCHMARK.toFlywheelEvents && window.SELFHEAL_VALIDATOR && window.SELFHEAL_SCHEMA_FLYWHEEL) {
+      const events = window.SELFHEAL_BENCHMARK.toFlywheelEvents(result.results);
+      const invalid = events.map(ev => window.SELFHEAL_VALIDATOR.validate(window.SELFHEAL_SCHEMA_FLYWHEEL.EVENT, ev))
+                             .map((v, i) => ({ i, v })).filter(x => !x.v.ok);
+      window.__BENCH_RESULT.flywheelEvents = events;
+      window.__BENCH_RESULT.flywheelValidation = { ok: invalid.length === 0, invalid };
+      h += '<h2>Optional: flywheel-event/v1 export (' + events.length + ' rows, schema-' + (invalid.length === 0 ? '<span class="ok">valid</span>' : '<span class="bad">INVALID</span>') + ')</h2>';
+      h += '<p><small>verify_confidence is always <code>simulated</code> — these rows are logged for the S3 report consumer but can never be promoted to the brain.</small></p>';
+      if (invalid.length) h += '<pre class="bad">' + esc(JSON.stringify(invalid, null, 1)) + '</pre>';
+    }
+
+    out.innerHTML = h;
+    status.innerHTML = '<b class="' + (decision === 'GO' ? 'ok' : 'bad') + '">done — ' + decision + '</b>';
+  } catch (e) {
+    window.__BENCH_ERR = String((e && e.stack) || e);
+    status.innerHTML = '<b class="bad">RUN ERROR: ' + esc((e && e.stack) || e) + '</b>';
+  }
+})();
+</script>
+</body></html>

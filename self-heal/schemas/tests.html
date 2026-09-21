@@ -1,0 +1,233 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>S1 — schemas + validator tests</title>
+<style>
+  body{font:13px/1.5 ui-sans-serif,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
+  h1{font-size:16px}h2{font-size:13px;margin:14px 0 4px;border-bottom:2px solid #eee;padding-bottom:3px}
+  .ok{color:#137333;font-weight:700}.bad{color:#c5221f;font-weight:700}.warn{color:#b06000}
+  .row{font-family:ui-monospace,Menlo,monospace;font-size:11px;margin:2px 0}
+  .PASS{color:#137333}.FAIL{color:#c5221f}
+  pre{background:#f6f6f6;padding:8px;white-space:pre-wrap;max-height:34vh;overflow:auto;font-size:11px}
+  table{border-collapse:collapse;margin:8px 0;font-size:12px}
+  td,th{border:1px solid #ddd;padding:4px 8px;text-align:left}
+  th{background:#f6f6f6}
+  .banner{background:#e8f5e9;border:1px solid #81c784;border-radius:6px;padding:6px 10px;margin:6px 0;font-size:12px}
+  .banner.warn{background:#fff8e1;border-color:#ffe082}
+</style></head>
+<body>
+<h1>S1 — schemas + validator tests</h1>
+<p><small>Every corpus row is labelled with its expected outcome (ACCEPT/REJECT). A row is PASS when
+the validator matches the expected outcome. Also validates the LIVE <code>__S7_RESULT.suite</code>
+against test-plan/v1 as a cross-check.</small></p>
+<div id="out"></div>
+
+<script src="../../selfheal-core.js"></script>
+<script src="../pipeline/candidate-generation.js"></script>
+<script src="../pipeline/change-diagnosis.js"></script>
+<script src="../pipeline/failure-reporter.js"></script>
+<script src="../pipeline/outcome-verification.js"></script>
+<script src="../pretotype/fixtures.js"></script>
+<script src="../pretotype/testgen.js"></script>
+<script src="../pretotype/selfheal-runtime.js"></script>
+<script src="validator.js"></script>
+<script src="test-plan.schema.js"></script>
+<script src="flywheel-event.schema.js"></script>
+<script src="escalation.schema.js"></script>
+<script src="false-heal.js"></script>
+<script>
+(function () {
+  const out = document.getElementById('out');
+  const V = window.SELFHEAL_VALIDATOR;
+  const TP = window.SELFHEAL_SCHEMA_TESTPLAN;
+  const FW = window.SELFHEAL_SCHEMA_FLYWHEEL;
+  const ES = window.SELFHEAL_SCHEMA_ESCALATION;
+
+  // ---- corpus ----
+  const validPlan = {
+    screenType: 'login',
+    tests: [{
+      id: 'L1', title: 'Login with valid credentials', kind: 'positive', goal: 'happy path',
+      steps: [
+        { action: 'fill',   target: 'Email',    value: 'x@y.z', _anchor: {} },
+        { action: 'click',  target: 'Sign in',                   _anchor: {} },
+        { action: 'assert', target: 'Dashboard' }
+      ]
+    }]
+  };
+  const badPlanNoKind = { screenType: 'login', tests: [{ id: 'L1', title: 't', steps: [{ action: 'fill', target: 'e' }] }] };
+  const badPlanBadAction = { screenType: 'login', tests: [{ id: 'L1', title: 't', kind: 'positive', steps: [{ action: 'wiggle', target: 'x' }] }] };
+  const badPlanEmptySteps = { screenType: 'login', tests: [{ id: 'L1', title: 't', kind: 'positive', steps: [] }] };
+  const badPlanBadId = { screenType: 'login', tests: [{ id: '9!!', title: 't', kind: 'positive', steps: [{ action: 'click', target: 'x' }] }] };
+  const badPlanExtraField = { screenType: 'login', tests: [{ id: 'L1', title: 't', kind: 'positive', steps: [{ action: 'click', target: 'x' }], secret: 'yes' }] };
+  const badPlanClickNoTarget = { screenType: 'login', tests: [{ id: 'L1', title: 't', kind: 'positive', steps: [{ action: 'click' }] }] };       // regression: bug #3
+  const validPlanNavigateNoTarget = { screenType: 'partial', tests: [{ id: 'N1', title: 'nav', kind: 'smoke', steps: [{ action: 'navigate' }] }] };
+
+  // regression: bug #1 — a schema whose two oneOf branches can both match must reject a doubly-matching value
+  const overlapSchema = { oneOf: [{ type: 'number', minimum: 0 }, { type: 'number', maximum: 100 }] };
+
+  const validEventHigh = {
+    schemaVersion: 'flywheel-event/v1', ts: '2026-07-01T10:00:00Z', app: 'fixture:login',
+    testId: 'L1', stepId: 'submit', outcome: 'PASS', verify_confidence: 'HIGH',
+    category: 'VERIFIED', source: 'live', driftKind: 'pristine', healed: false, false_heal: false,
+    diagnosis: null, hitl_decision: null
+  };
+  const validEventSim = {
+    schemaVersion: 'flywheel-event/v1', ts: '2026-06-26T09:00:00Z', app: 'amplitude',
+    testId: 'G3', stepId: null, outcome: 'PASS', verify_confidence: 'simulated',
+    category: 'SMOKE', source: 'simulated', driftKind: 'restyle', healed: true, false_heal: false,
+    diagnosis: null, hitl_decision: null
+  };
+  const badEventNoVersion = { ...validEventHigh }; delete badEventNoVersion.schemaVersion;
+  const badEventBadOutcome = { ...validEventHigh, outcome: 'LGTM' };
+  const badEventRawDecideLabel = { ...validEventHigh, outcome: 'PASSED_WARNING' };   // regression: bug #2 (raw outcome-verification label, not the runtime's canonical one)
+  const badEventBadConf = { ...validEventHigh, verify_confidence: 'kinda' };
+  const badEventBadTs = { ...validEventHigh, ts: 'yesterday' };
+  // firstTry (optional, back-compat: absent = unknown, NOT counted either way)
+  const validEventFirstTryTrue  = { ...validEventHigh, firstTry: true };
+  const validEventFirstTryFalse = { ...validEventHigh, firstTry: false };
+  const validEventFirstTryNull  = { ...validEventHigh, firstTry: null };
+  const badEventFirstTryStr     = { ...validEventHigh, firstTry: 'yes' };
+  const badEventFirstTryNum     = { ...validEventHigh, firstTry: 1 };
+
+  const validReqTestgen = {
+    schemaVersion: 'escalation-request/v1', reason: 'testgen', app: 'amplitude',
+    screen: { url: 'https://…', domSummary: 'input[email] input[password] btn[Sign in]', screenshot: null },
+    failure: null, goal: 'sign in with valid credentials'
+  };
+  const validReqNameless = {
+    schemaVersion: 'escalation-request/v1', reason: 'nameless-residue', app: 'fixture:payment',
+    screen: { url: 'about:blank', domSummary: 'button[gear] role=button', screenshot: null },
+    failure: { verdict: 'abstain', category: 'AMBIGUITY', diagnosis: 'nameless icon' },
+    goal: null
+  };
+  const badReqBadReason = { ...validReqTestgen, reason: 'guess-the-password' };
+  const badReqFailureNoVerdict = { ...validReqNameless, failure: { category: 'AMBIGUITY', diagnosis: 'nameless icon' } };   // regression: bug #4
+
+  const validResOk = {
+    schemaVersion: 'escalation-response/v1', ok: true,
+    testPlan: validPlan, hint: null, reason: null, confidence: 0.82
+  };
+  const validResFail = {
+    schemaVersion: 'escalation-response/v1', ok: false,
+    testPlan: null, hint: null, reason: 'cannot-resolve', confidence: 0.3
+  };
+  const badResConfHigh = { ...validResFail, confidence: 1.5 };
+
+  const corpus = [
+    // [label, schema, obj, expectAccept]
+    ['test-plan:valid',                TP.PLAN, validPlan,           true ],
+    ['test-plan:missing-kind',         TP.PLAN, badPlanNoKind,       false],
+    ['test-plan:bad-action-enum',      TP.PLAN, badPlanBadAction,    false],
+    ['test-plan:empty-steps',          TP.PLAN, badPlanEmptySteps,   false],
+    ['test-plan:bad-id-pattern',       TP.PLAN, badPlanBadId,        false],
+    ['test-plan:extra-field',          TP.PLAN, badPlanExtraField,   false],
+    ['test-plan:click-no-target',      TP.PLAN, badPlanClickNoTarget, false],   // regression: bug #3
+    ['test-plan:navigate-no-target-ok',TP.PLAN, validPlanNavigateNoTarget, true],
+    ['validator:oneOf-exactly-one',    overlapSchema, 50,           false],   // regression: bug #1 (matches both branches)
+    ['validator:oneOf-exactly-one-lo', overlapSchema, -5,           true ],   // matches only branch 2 → valid oneOf
+    ['flywheel:valid-HIGH',            FW.EVENT, validEventHigh,     true ],
+    ['flywheel:valid-simulated',       FW.EVENT, validEventSim,      true ],
+    ['flywheel:missing-version',       FW.EVENT, badEventNoVersion,  false],
+    ['flywheel:bad-outcome-enum',      FW.EVENT, badEventBadOutcome, false],
+    ['flywheel:reject-raw-decide-label', FW.EVENT, badEventRawDecideLabel, false],   // regression: bug #2
+    ['flywheel:bad-confidence-enum',   FW.EVENT, badEventBadConf,    false],
+    ['flywheel:bad-timestamp',         FW.EVENT, badEventBadTs,      false],
+    ['flywheel:firstTry-true',         FW.EVENT, validEventFirstTryTrue,  true ],
+    ['flywheel:firstTry-false',        FW.EVENT, validEventFirstTryFalse, true ],
+    ['flywheel:firstTry-null',         FW.EVENT, validEventFirstTryNull,  true ],
+    ['flywheel:firstTry-string-rejected', FW.EVENT, badEventFirstTryStr,  false],
+    ['flywheel:firstTry-number-rejected', FW.EVENT, badEventFirstTryNum,  false],
+    ['escalation-req:valid-testgen',   ES.REQUEST, validReqTestgen,  true ],
+    ['escalation-req:valid-nameless',  ES.REQUEST, validReqNameless, true ],
+    ['escalation-req:bad-reason-enum', ES.REQUEST, badReqBadReason,  false],
+    ['escalation-req:failure-no-verdict', ES.REQUEST, badReqFailureNoVerdict, false],   // regression: bug #4
+    ['escalation-res:valid-ok',        ES.RESPONSE, validResOk,      true ],
+    ['escalation-res:valid-fail',      ES.RESPONSE, validResFail,    true ],
+    ['escalation-res:bad-confidence',  ES.RESPONSE, badResConfHigh,  false]
+  ];
+
+  const rows = corpus.map(([label, schema, obj, expectAccept]) => {
+    const r = V.validate(schema, obj);
+    const passed = (r.ok === expectAccept);
+    return { label, expect: expectAccept ? 'ACCEPT' : 'REJECT',
+             got: r.ok ? 'ACCEPT' : 'REJECT', passed, errCount: r.errors.length,
+             firstErr: r.errors[0] ? (r.errors[0].path + ' — ' + r.errors[0].msg) : '' };
+  });
+  const pass = rows.filter(r => r.passed).length, fail = rows.length - pass;
+
+  // ---- false-heal primitive (single-sourced decision — schemas/false-heal.js) unit checks ----
+  const FH = window.SELFHEAL_FALSEHEAL;
+  const fhCases = [
+    ['no heal (abstain) → never false-heal',        { verdict: 'abstain', expectedVerdict: 'heal',    resolvedIdentity: null, expectedIdentity: 'a' }, false],
+    ['fail verdict → never false-heal',             { verdict: 'fail',    expectedVerdict: 'heal',    resolvedIdentity: null, expectedIdentity: 'a' }, false],
+    ['heal to the intended element → not false',    { verdict: 'heal',    expectedVerdict: 'heal',    resolvedIdentity: 'a',  expectedIdentity: 'a' }, false],
+    ['heal to the WRONG element → false-heal',      { verdict: 'heal',    expectedVerdict: 'heal',    resolvedIdentity: 'b',  expectedIdentity: 'a' }, true ],
+    ['heal when abstain was expected → false-heal', { verdict: 'heal',    expectedVerdict: 'abstain', resolvedIdentity: 'a',  expectedIdentity: 'a' }, true ],
+    ['heal when fail was expected → false-heal',    { verdict: 'heal',    expectedVerdict: 'fail',    resolvedIdentity: 'x',  expectedIdentity: 'y' }, true ]
+  ];
+  const fhRows = fhCases.map(([label, input, expected]) => {
+    const got = FH.isFalseHeal(input);
+    return { label, expect: expected, got, passed: got === expected };
+  });
+  const fhPass = fhRows.filter(r => r.passed).length, fhFail = fhRows.length - fhPass;
+
+  // ---- cross-check against LIVE artifacts ----
+  const stage = document.createElement('div'); stage.id = 'appStage';
+  stage.innerHTML = window.PRETOTYPE_FIXTURES.LOGIN_DOM; document.body.appendChild(stage);
+  const liveSuite = window.__TESTGEN.authorTests(document, {});
+  const liveCheck = V.validate(TP.PLAN, liveSuite);
+  document.body.removeChild(stage);
+
+  // Build a live flywheel row from a real S7 result if the user has run S7 in a sibling tab
+  // (skipped otherwise — we still have the corpus rows).
+  const s7 = window.__S7_RESULT;
+  let s7Check = null;
+  if (s7 && s7.liveResults && s7.liveResults[0]) {
+    const r0 = s7.liveResults[0];
+    const row = {
+      schemaVersion: 'flywheel-event/v1', ts: new Date().toISOString(), app: 'fixture:login',
+      testId: r0.id, stepId: null,
+      outcome: r0.outcome === 'PASSED_WARNING' ? 'PASSED_WARNING' : r0.outcome,
+      verify_confidence: r0.verify_confidence,
+      category: r0.category, source: 'live', driftKind: 'pristine',
+      healed: false, false_heal: false, diagnosis: null, hitl_decision: null
+    };
+    s7Check = V.validate(FW.EVENT, row);
+  }
+
+  // ---- render ----
+  let h = '';
+  h += '<div class="banner">S1 gate: <b>' + pass + '/' + rows.length + ' corpus rows</b> + <b>' + fhPass + '/' + fhRows.length + ' false-heal checks</b> passed '
+     + (fail === 0 && fhFail === 0 ? '<span class="ok">GO</span>' : '<span class="bad">FAIL (' + (fail + fhFail) + ')</span>')
+     + '</div>';
+  h += '<h2>Corpus (expected accept vs reject)</h2>';
+  h += '<table><tr><th>#</th><th>label</th><th>expect</th><th>got</th><th>result</th><th>first error (if any)</th></tr>';
+  rows.forEach((r, i) => {
+    h += '<tr><td>' + (i + 1) + '</td><td>' + r.label + '</td><td>' + r.expect + '</td><td>' + r.got + '</td>'
+      +  '<td class="' + (r.passed ? 'PASS' : 'FAIL') + '">' + (r.passed ? 'PASS' : 'FAIL') + '</td>'
+      +  '<td>' + (r.firstErr ? r.firstErr : '—') + '</td></tr>';
+  });
+  h += '</table>';
+
+  h += '<h2>false-heal primitive (schemas/false-heal.js — one definition for S4 benchmark + S8 flywheel)</h2>';
+  h += '<table><tr><th>#</th><th>case</th><th>expect</th><th>got</th><th>result</th></tr>';
+  fhRows.forEach((r, i) => {
+    h += '<tr><td>' + (i + 1) + '</td><td>' + r.label + '</td><td>' + r.expect + '</td><td>' + r.got + '</td>'
+      +  '<td class="' + (r.passed ? 'PASS' : 'FAIL') + '">' + (r.passed ? 'PASS' : 'FAIL') + '</td></tr>';
+  });
+  h += '</table>';
+
+  h += '<h2>Live artifact cross-check</h2>';
+  h += '<div class="row">test-plan/v1 vs live <code>testgen.authorTests(loginDOM)</code>: '
+     + (liveCheck.ok ? '<span class="ok">ACCEPT ✓</span>' : '<span class="bad">REJECT (' + liveCheck.errors.length + ' errors)</span>')
+     + ' &nbsp;<small>screenType=' + liveSuite.screenType + ', tests=' + liveSuite.tests.length + '</small></div>';
+  if (s7Check) h += '<div class="row">flywheel-event/v1 vs synthesised live row from <code>__S7_RESULT[0]</code>: '
+     + (s7Check.ok ? '<span class="ok">ACCEPT ✓</span>' : '<span class="bad">REJECT (' + s7Check.errors.length + ' errors)</span>') + '</div>';
+  else h += '<div class="row warn">(no <code>__S7_RESULT</code> in this tab — synthesised row check skipped; corpus still runs.)</div>';
+
+  if (!liveCheck.ok) h += '<pre>' + JSON.stringify(liveCheck.errors, null, 2) + '</pre>';
+
+  window.__S1_TESTS = { rows, pass, fail, fhRows, fhPass, fhFail, liveCheck, s7Check };
+  out.innerHTML = h;
+})();
+</script>
+</body></html>
