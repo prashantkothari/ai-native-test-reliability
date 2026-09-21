@@ -1,5 +1,11 @@
 # Plan reference
 
+**Note (2026-09-21):** the `lib` submodule referenced below was removed during repo
+consolidation. The library now lives at `experiment/self-heal/` + `experiment/selfheal-core.js`,
+pinned via `experiment/SELFHEAL_VERSION` (currently `dc5a87f`, not the `a31ace4` recorded
+below — see docs/planning/merge-plan-v3.md for why). This file otherwise kept as historical
+record, same as report/*.md.
+
 Canonical plan lives at `/Users/prashant/.claude/plans/think-about-this-share-dynamic-lobster.md`.
 This file is a pointer to keep the experiment directory self-describing.
 
