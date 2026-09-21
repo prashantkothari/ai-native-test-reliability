@@ -2,6 +2,14 @@
 
 Append-only. One line per sync run or manual edit. Newest at top.
 
+- 2026-09-21 — consolidation S4 (verification): Probe 1a (bundle byte-diff vs true
+  pre-vendor baseline, captured from a fresh chip-c-a1-scaffold checkout with the real
+  submodule initialized) PASS, byte-identical, 100072 bytes. Probe 1b (translate-locator
+  unit tests) PASS 10/10 — note: doesn't exercise the scrubbed benchmark/test files, only
+  translate-locator.js itself. Probe 2a (fresh clone -> npm install -> bundle -> tests)
+  PASS. Probe 3 (wiki-tests) PASS 10/10 on the fresh clone too. Probe 2b (full trial against
+  target_repo) DEFERRED — needs the actual target app (n8n, per this branch's commit
+  history) cloned and confirmed by the user; not something to fabricate.
 - 2026-09-21 — consolidation S3 (wiring): harness paths repointed at experiment/self-heal/,
   SELFHEAL_VERSION added, submodule removed, 3 new wiki-tests added (test_selfheal_version,
   test_selfheal_version_bump, test_dual_mode), README.md + NOTICE.md added, docs/planning/

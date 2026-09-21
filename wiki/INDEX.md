@@ -24,5 +24,11 @@ Plan to merge this repo with `prashantkothari/ai-for-qa`. Full-length docs live 
 - S0 (branch audit) — DONE. Canonical corrected: `chip-c-a1-scaffold` + `chip-d-legacy-target` merged (neither was ancestor of the other); `experiment-only` discarded (parallel lineage, wrong fork pin); `claude/ai-native-test-reliability-011333` was a strict ancestor of both, superseded.
 - S1 (branch consolidation) — DONE. `consolidated-main` built.
 - S2 (vendor + scrub) — DONE. Vendored from `dc5a87f` (not merge-plan-v3's assumed `599dca1c` — superseded by this branch's own "bump lib submodule" commits before this session started; `dc5a87f` is a strict superset). 33 files landed at `experiment/self-heal/` + `experiment/selfheal-core.js` (not repo-root — this branch nests everything under `experiment/`, unlike the flat layout the planning docs assumed).
-- S3 (wiring) — IN PROGRESS.
-- S4-S6 — pending.
+- S3 (wiring) — DONE. Full wiki scaffold + README/NOTICE landed, 3 new wiki-tests added,
+  10/10 wiki/tests/*.sh passing.
+- S4 (verification) — DONE except Probe 2b. Bundle byte-reproducibility confirmed against a
+  true pre-vendor baseline (fresh chip-c-a1-scaffold checkout with real submodule). Fresh-clone
+  smoke test passes. Probe 2b (full trial) deferred — needs user to confirm/provide the
+  target app checkout.
+- S5 (push to new remote) — pending: needs the target GitHub repo URL from the user.
+- S6 (archive ai-native-test-reliability) — pending, gated on S5.
