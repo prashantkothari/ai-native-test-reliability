@@ -21,7 +21,7 @@ function runWidening() {
   const has = (set, el) => set.indexOf(el) !== -1;
   const metrics = {};
 
-  // a roleless clickable card grid (the Gong-Slides / product-grid shape): cursor:pointer DIVs,
+  // a roleless clickable card grid (the REDACTED-Slides / product-grid shape): cursor:pointer DIVs,
   // no role, no onclick attr, no tabindex — invisible to core WEB.candidates.
   const CARD = (label, w) => `<div class="card" style="cursor:pointer;width:${w || 160}px;height:80px">
     <div class="hd">${label}</div><div class="price">$1</div></div>`;

@@ -118,7 +118,7 @@ function runAdversarial() {
     } finally { unmount(d); }
   });
 
-  test('div-soup (Gong-shape): 3 identical "Add" in repeated <div> cards → container detection heals correct card', () => {
+  test('div-soup (REDACTED-shape): 3 identical "Add" in repeated <div> cards → container detection heals correct card', () => {
     // Ledger K25: real SPAs are div-soup, not <td>. containerOf must find the repeating sibling unit
     // (the .card div), not climb to the shared grid. This FAILS with the old semantic-only containerOf.
     const d = mount(`<div class="grid">
@@ -181,7 +181,7 @@ function runAdversarial() {
   });
 
   // ================= ORDINAL fallback (K30) — identical-content twins =================
-  test('ordinal fallback: identical twins (Amplitude funnel-step shape) → ordinal heals recorded position', () => {
+  test('ordinal fallback: identical twins (REDACTED funnel-step shape) → ordinal heals recorded position', () => {
     const d = mount(`<div class="builder">
       <div class="step"><span>Any Active Event</span><button name="opt">More Options</button></div>
       <div class="step"><span>Any Active Event</span><button name="opt">More Options</button></div>

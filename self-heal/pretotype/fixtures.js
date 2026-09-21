@@ -115,7 +115,7 @@
   // scope for a fixture-level session). A <li> row with the action buttons nested one div deeper
   // sidesteps it correctly (li IS in ROW_TAGS; the intermediate div is not, so containerOf climbs
   // straight to the li and captures the customer name too) — an equally real "list" shape per the
-  // T4.1 archetype name, and the one actually proven live in this codebase (Gong/AirPods evidence is
+  // T4.1 archetype name, and the one actually proven live in this codebase (REDACTED/AirPods evidence is
   // all div/li-based, never a literal <td>-per-action table).
   const ORDERS_DOM = `
     <div class="list-wrap">
@@ -133,7 +133,7 @@
   // ---- NAV/MENUS archetype fixture (P2 T4.2): a sidebar nav whose links have DISTINCT names (no
   // disambiguation needed here — this archetype is about verify-by-effect on a URL+DOM change, not
   // row-text). Clicking a link switches the visible view AND updates location.hash — the runtime
-  // checks BOTH (T4.2: "verify-by-effect on URL/DOM change"), the Amplitude-pilot pattern.
+  // checks BOTH (T4.2: "verify-by-effect on URL/DOM change"), the REDACTED-pilot pattern.
   const NAV_DOM = `
     <div class="app-shell">
       <nav class="sidenav" aria-label="Main" data-oracle="nav">

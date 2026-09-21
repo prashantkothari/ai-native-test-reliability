@@ -71,7 +71,7 @@ against test-plan/v1 as a cross-check.</small></p>
     diagnosis: null, hitl_decision: null
   };
   const validEventSim = {
-    schemaVersion: 'flywheel-event/v1', ts: '2026-06-26T09:00:00Z', app: 'amplitude',
+    schemaVersion: 'flywheel-event/v1', ts: '2026-06-26T09:00:00Z', app: 'REDACTED',
     testId: 'G3', stepId: null, outcome: 'PASS', verify_confidence: 'simulated',
     category: 'SMOKE', source: 'simulated', driftKind: 'restyle', healed: true, false_heal: false,
     diagnosis: null, hitl_decision: null
@@ -89,7 +89,7 @@ against test-plan/v1 as a cross-check.</small></p>
   const badEventFirstTryNum     = { ...validEventHigh, firstTry: 1 };
 
   const validReqTestgen = {
-    schemaVersion: 'escalation-request/v1', reason: 'testgen', app: 'amplitude',
+    schemaVersion: 'escalation-request/v1', reason: 'testgen', app: 'REDACTED',
     screen: { url: 'https://…', domSummary: 'input[email] input[password] btn[Sign in]', screenshot: null },
     failure: null, goal: 'sign in with valid credentials'
   };
