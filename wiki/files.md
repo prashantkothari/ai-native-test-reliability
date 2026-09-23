@@ -22,4 +22,6 @@ Scope: source files under `docs/` and `experiment/self-heal/`. Every non-README 
 
 | [docs/planning/next-actions.md](../docs/planning/next-actions.md) | Comprehensive future-work punch list — 15 tasks, dependency-ordered, with decisions vs. doable items separated. | built |
 
+| [docs/plans/self-heal-second-opinion-checker.md](../docs/plans/self-heal-second-opinion-checker.md) | Design plan for wiring a Jev second-opinion checker into the self-heal loop as a reject-only veto. Includes bake-off history. | built |
+
 <!-- Add rows here as new source files land. Sync will flag missing entries. -->
