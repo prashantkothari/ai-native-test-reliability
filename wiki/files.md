@@ -14,4 +14,10 @@ Scope: source files under `docs/` and `experiment/self-heal/`. Every non-README 
 | [docs/planning/redteam-pass.md](../docs/planning/redteam-pass.md) | Independent redteam pass over the planning docs; 5 blockers found. | built |
 | [docs/planning/merge-plan-v3.md](../docs/planning/merge-plan-v3.md) | Executable merge plan, all redteam blockers absorbed. | built |
 
+| [docs/planning/post-merge-review.md](../docs/planning/post-merge-review.md) | Post-merge cynical review — what shipped, what's still fragile, and every remaining assumption. | built |
+
+| [docs/research/self-heal-learnings-2026-09.md](../docs/research/self-heal-learnings-2026-09.md) | Self-heal learnings — how the shipped code compares to the research frontier. | built |
+| [docs/research/test-recorder-survey-2026-09.md](../docs/research/test-recorder-survey-2026-09.md) | Recorder-fork survey. | built |
+| [docs/research/test-recorder-survey-2026-09-v2.md](../docs/research/test-recorder-survey-2026-09-v2.md) | Recorder-fork survey (v2 revision). | built |
+
 <!-- Add rows here as new source files land. Sync will flag missing entries. -->
