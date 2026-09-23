@@ -12,7 +12,7 @@ Legend:
 
 ## Immediate (blocks further branch cleanup)
 
-### T1 — Update the "protect" ruleset scope (Owner-only)
+### T1 — Update the "protect" ruleset scope (Owner-only) — DONE 2026-09-24
 
 **What.** The current ruleset on `prashantkothari/ai-native-test-reliability` (id `22127928`, name `protect`) has `conditions.ref_name.include = ["~ALL"]` with rule `deletion` — protecting *every* branch from deletion. Needs to protect the default branch only.
 
@@ -25,7 +25,7 @@ gh api --method PATCH repos/prashantkothari/ai-native-test-reliability/rulesets/
 
 **Blocks.** T2.
 
-### T2 — Delete the 8 stale merged remote branches (Doable, once T1 is done)
+### T2 — Delete the 8 stale merged remote branches (Doable, once T1 is done) — DONE 2026-09-24
 
 **What.** 8 branches on `prashantkothari/ai-native-test-reliability` remote whose content is fully on `main`:
 `claude/ai-native-test-reliability-011333`, `claude/github-commits-not-pushing-632a19`, `claude/p1-slice`, `clean-tracked-artifacts`, `consolidated-main`, `fix-remaining-lib-refs`, `post-merge-review`, `preserve-research-docs`, `sever-preflight7-dependency`, `task-list` (this branch, after merge).
@@ -40,7 +40,7 @@ for b in claude/ai-native-test-reliability-011333 claude/github-commits-not-push
 done
 ```
 
-I can run this myself once T1 is done.
+**Done.** Ruleset's deletion rule removed via GitHub UI (Option B from the alternatives list). All 10 stale branches deleted (grew from 8 to 10 as later work sessions added `sever-preflight7-dependency` and `task-list`). Remote now has exactly one branch: `main`.
 
 ### T3 — Update `/Users/prashant`'s stale local `main` pointer (Decision — user only)
 
