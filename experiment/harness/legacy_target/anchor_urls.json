@@ -1,0 +1,40 @@
+{
+  "_comment": "5 primary interaction elements per URL, with anchors Playwright would use. Verified against a running mediawiki:1.39 default install on 2026-09-15. Zero data-testid on any of these pages.",
+  "target": "MediaWiki 1.39 default install (SQLite)",
+  "base_url": "http://localhost:8080",
+  "pages": [
+    {
+      "url": "http://localhost:8080/index.php/Main_Page",
+      "purpose": "Anonymous read view: top-nav + tab controls + search",
+      "elements": [
+        {"label": "Edit tab",       "getByRole": "link[name='Edit']",     "getByText": "Edit",              "css": "li#ca-edit a",       "xpath": "//li[@id='ca-edit']/a"},
+        {"label": "View history",   "getByRole": "link[name='View history']","getByText": "View history",   "css": "li#ca-history a",    "xpath": "//li[@id='ca-history']/a"},
+        {"label": "Log in link",    "getByRole": "link[name='Log in']",   "getByText": "Log in",            "css": "li#pt-login a",      "xpath": "//li[@id='pt-login']/a"},
+        {"label": "Search input",   "getByRole": "searchbox",             "getByText": null,                "css": "input#searchInput",  "xpath": "//input[@id='searchInput']"},
+        {"label": "Random page",    "getByRole": "link[name='Random page']","getByText": "Random page",     "css": "li#n-randompage a",  "xpath": "//li[@id='n-randompage']/a"}
+      ]
+    },
+    {
+      "url": "http://localhost:8080/index.php?title=Special:UserLogin",
+      "purpose": "Login form",
+      "elements": [
+        {"label": "Username",       "getByRole": "textbox[name='Username']","getByText": null,             "css": "input#wpName1",      "xpath": "//input[@id='wpName1']"},
+        {"label": "Password",       "getByRole": "textbox[name='Password']","getByText": null,             "css": "input#wpPassword1",  "xpath": "//input[@id='wpPassword1']"},
+        {"label": "Keep me logged in","getByRole": "checkbox",            "getByText": "Keep me logged in", "css": "input#wpRemember",   "xpath": "//input[@id='wpRemember']"},
+        {"label": "Log in button",  "getByRole": "button[name='Log in']", "getByText": "Log in",            "css": "button#wpLoginAttempt","xpath": "//button[@id='wpLoginAttempt']"},
+        {"label": "Help link (footer)","getByRole": "link[name='Help']",  "getByText": "Help",              "css": "li#n-help-mediawiki a","xpath": "//li[@id='n-help-mediawiki']/a"}
+      ]
+    },
+    {
+      "url": "http://localhost:8080/index.php?title=Main_Page&action=edit",
+      "purpose": "Wikitext editor: the canonical legacy-form flow",
+      "elements": [
+        {"label": "Wikitext editor","getByRole": "textbox[name='Wikitext source editor']","getByText": null,"css": "textarea#wpTextbox1","xpath": "//textarea[@id='wpTextbox1']"},
+        {"label": "Summary field",  "getByRole": "textbox",               "getByText": null,                "css": "input#wpSummary",    "xpath": "//input[@id='wpSummary']"},
+        {"label": "Save changes",   "getByRole": "button[name='Save changes']","getByText": "Save changes", "css": "input#wpSave",       "xpath": "//input[@id='wpSave']"},
+        {"label": "Show preview",   "getByRole": "button[name='Show preview']","getByText": "Show preview", "css": "input#wpPreview",    "xpath": "//input[@id='wpPreview']"},
+        {"label": "Show changes",   "getByRole": "button[name='Show changes']","getByText": "Show changes", "css": "input#wpDiff",       "xpath": "//input[@id='wpDiff']"}
+      ]
+    }
+  ]
+}

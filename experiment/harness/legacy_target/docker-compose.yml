@@ -1,0 +1,30 @@
+# Legacy weak-testid target: MediaWiki 1.39 with SQLite (no separate DB service).
+#
+# One-command bring-up:
+#   docker compose -f harness/legacy_target/docker-compose.yml up -d
+#
+# First-run install (run once, after the container is Up):
+#   docker compose -f harness/legacy_target/docker-compose.yml exec mediawiki \
+#     php maintenance/install.php \
+#       --dbtype=sqlite --dbpath=/var/www/data \
+#       --pass=adminpass123 --scriptpath="" \
+#       TestWiki Admin
+#   docker compose -f harness/legacy_target/docker-compose.yml exec -u root mediawiki \
+#     chown -R www-data:www-data /var/www/data /var/www/html/LocalSettings.php
+#
+# Verify: curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8080/index.php/Main_Page  → 200
+#
+# Ports: 8080 (host) → 80 (container).
+services:
+  mediawiki:
+    image: mediawiki:1.39
+    container_name: chipd-legacy-mw
+    ports:
+      - "8080:80"
+    volumes:
+      - mw_data:/var/www/data          # SQLite files + jobqueue
+      - mw_images:/var/www/html/images # Uploaded files
+    restart: unless-stopped
+volumes:
+  mw_data:
+  mw_images:

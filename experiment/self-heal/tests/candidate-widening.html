@@ -1,0 +1,31 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>self-heal — candidate widening (K28)</title>
+<style>
+  body{font:14px/1.5 ui-monospace,Menlo,monospace;max-width:900px;margin:24px auto;padding:0 16px}
+  h1{font-size:18px} .ok{color:#137333} .bad{color:#c5221f}
+  .row{padding:3px 0;border-bottom:1px solid #eee} .err{color:#c5221f;padding-left:20px}
+  .summary{font-size:16px;margin:12px 0;padding:8px;background:#f5f5f5;border-radius:6px}
+  table{border-collapse:collapse;margin-top:12px} td,th{border:1px solid #ddd;padding:4px 8px;text-align:left}
+</style></head><body>
+<h1>self-heal — candidate widening for roleless React-handler clickables (Ledger K28)</h1>
+<!-- validated core first, then the opt-in widener, then the tests -->
+<script src="../../selfheal-core.js?v=2"></script>
+<script src="../pipeline/candidate-widening.js?v=2"></script>
+<script src="candidate-widening-tests.js?v=2"></script>
+<div id="out"></div>
+<script>
+  const r = runWidening();
+  const out = document.getElementById('out');
+  const sum = document.createElement('div'); sum.className='summary';
+  sum.innerHTML = `<b class="${r.failed?'bad':'ok'}">${r.passed}/${r.total} passing</b>` + (r.failed?` — ${r.failed} FAILED`:' — all green');
+  out.appendChild(sum);
+  r.cases.forEach(c=>{ const d=document.createElement('div'); d.className='row';
+    d.innerHTML = `<span class="${c.ok?'ok':'bad'}">${c.ok?'✓':'✗'}</span> ${c.name}` + (c.ok?'':`<div class="err">${c.err}</div>`);
+    out.appendChild(d); });
+  if(Object.keys(r.metrics||{}).length){ const t=document.createElement('table');
+    t.innerHTML='<tr><th>metric</th><th>value</th><th>unit</th><th>tag</th></tr>'+
+      Object.entries(r.metrics).map(([k,m])=>`<tr><td>${k}</td><td>${m.value}</td><td>${m.unit}</td><td>${m.tag}</td></tr>`).join('');
+    out.appendChild(t); }
+  window.__WIDENING_RESULT = r;
+</script>
+</body></html>
