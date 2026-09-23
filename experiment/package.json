@@ -1,0 +1,20 @@
+{
+  "name": "self-heal-runner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bundle": "node harness/bundle-library.js",
+    "test:translator": "node harness/translate-locator.test.js",
+    "trial": "node harness/run_trials.js",
+    "test": "npm run bundle && npm run test:translator"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.125.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@playwright/mcp": "^0.0.81"
+  }
+}

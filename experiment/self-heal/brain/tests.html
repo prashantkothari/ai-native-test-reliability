@@ -1,0 +1,202 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>S2 — brain (verify-gated cache) tests</title>
+<style>
+  body{font:13px/1.5 ui-sans-serif,-apple-system,Segoe UI,Roboto,sans-serif;margin:16px;color:#111}
+  h1{font-size:16px}h2{font-size:13px;margin:14px 0 4px;border-bottom:2px solid #eee;padding-bottom:3px}
+  .ok{color:#137333;font-weight:700}.bad{color:#c5221f;font-weight:700}.warn{color:#b06000}
+  .row{font-family:ui-monospace,Menlo,monospace;font-size:11px;margin:2px 0}
+  .PASS{color:#137333}.FAIL{color:#c5221f}
+  table{border-collapse:collapse;margin:8px 0;font-size:12px}
+  td,th{border:1px solid #ddd;padding:4px 8px;text-align:left}
+  th{background:#f6f6f6}
+  .banner{background:#e8f5e9;border:1px solid #81c784;border-radius:6px;padding:6px 10px;margin:6px 0;font-size:12px}
+  #appStage{border:1px solid #ccc;border-radius:8px;padding:10px;width:340px;margin:8px 0}
+</style></head>
+<body>
+<h1>S2 — brain (verify-gated cache) tests</h1>
+<p><small>Corpus of put/get scenarios + a live before/after metric: run S7's <code>executeLive</code> twice
+against the SAME fixture, with the brain wired in between, and MEASURE the cache hit rate on run 2
+(not asserted — computed from a real second run).</small></p>
+<div id="out"></div>
+<div id="appStage"></div>
+
+<script src="../../selfheal-core.js"></script>
+<script src="../pipeline/candidate-generation.js"></script>
+<script src="../pipeline/change-diagnosis.js"></script>
+<script src="../pipeline/failure-reporter.js"></script>
+<script src="../pipeline/outcome-verification.js"></script>
+<script src="../pretotype/fixtures.js"></script>
+<script src="../pretotype/testgen.js"></script>
+<script src="../pretotype/selfheal-runtime.js"></script>
+<script src="brain.js"></script>
+<script>
+(async function () {   // P2 T5.1: executeLive is now async
+  const out = document.getElementById('out');
+  const B = window.SELFHEAL_BRAIN, F = window.PRETOTYPE_FIXTURES, TG = window.__TESTGEN, RT = window.__RUNTIME;
+  const stage = document.getElementById('appStage');
+
+  // ---- unit corpus: put/get scenarios (no DOM needed for most; a couple mount a real element) ----
+  const rows = [];
+  function check(label, fn) {
+    let passed, detail;
+    try { passed = !!fn(); detail = ''; } catch (e) { passed = false; detail = String(e); }
+    rows.push({ label, passed, detail });
+  }
+
+  check('put rejects MEDIUM confidence', () => {
+    const b = B.makeBrain();
+    const ok = b.put('T1', 'submit', '#submitBtn', { confidence: 'MEDIUM' });
+    return ok === false && !b.get('T1', 'submit', document);
+  });
+  check('put rejects NONE confidence', () => {
+    const b = B.makeBrain();
+    return b.put('T1', 'submit', '#submitBtn', { confidence: 'NONE' }) === false;
+  });
+  check('put rejects simulated confidence', () => {
+    const b = B.makeBrain();
+    return b.put('T1', 'submit', '#submitBtn', { confidence: 'simulated' }) === false;
+  });
+  check('put rejects role+name locator even at HIGH confidence', () => {
+    const b = B.makeBrain();
+    return b.put('T1', 'eye', "role=button[name='eye']", { confidence: 'HIGH' }) === false;
+  });
+  check('put rejects null locator at HIGH confidence', () => {
+    const b = B.makeBrain();
+    return b.put('T1', 'ghost', null, { confidence: 'HIGH' }) === false;
+  });
+  check('put accepts a real #id anchor at HIGH confidence', () => {
+    const b = B.makeBrain();
+    return b.put('T1', 'submit', '#submitBtn', { confidence: 'HIGH' }) === true;
+  });
+  check('put accepts a real [data-testid] anchor at HIGH confidence', () => {
+    const b = B.makeBrain();
+    return b.put('T1', 'email', "[data-testid='login-email']", { confidence: 'HIGH' }) === true;
+  });
+  check('get on a never-put key is a cold miss (null)', () => {
+    const b = B.makeBrain();
+    return b.get('NOPE', 'nope', document) === null;
+  });
+  check('get returns the element when the cached selector resolves to exactly one live hit', () => {
+    stage.innerHTML = F.LOGIN_DOM;
+    const b = B.makeBrain();
+    b.put('L1', 'submit', '#submitBtn', { confidence: 'HIGH' });
+    const hit = b.get('L1', 'submit', document);
+    return !!hit && hit.el === stage.querySelector('#submitBtn');
+  });
+  check('get is a cold miss when the cached selector no longer resolves uniquely (element removed)', () => {
+    stage.innerHTML = F.LOGIN_DOM;
+    const b = B.makeBrain();
+    b.put('L1', 'submit', '#submitBtn', { confidence: 'HIGH' });
+    stage.innerHTML = F.DASHBOARD_DOM;   // submit button is gone now
+    return b.get('L1', 'submit', document) === null;
+  });
+  check('get is a cold miss when the cached selector now matches TWO elements (never guess)', () => {
+    stage.innerHTML = F.LOGIN_DOM;
+    const b = B.makeBrain();
+    b.put('L1', 'submit', '.btn.primary', { confidence: 'HIGH' });   // hypothetical non-unique class anchor
+    const clone = stage.querySelector('.btn.primary').cloneNode(true);
+    stage.appendChild(clone);
+    return b.get('L1', 'submit', document) === null;
+  });
+  check('seed constructor pre-populates the store', () => {
+    const b = B.makeBrain({ 'X1:foo': { locator: '#foo', confidence: 'HIGH' } });
+    return b.snapshot()['X1:foo'].locator === '#foo';
+  });
+  check('snapshot is a real point-in-time copy — mutating it must not corrupt the live store', () => {
+    const b = B.makeBrain();
+    b.put('T1', 'submit', '#submitBtn', { confidence: 'HIGH' });
+    const snap = b.snapshot();
+    snap['T1:submit'].locator = '#hacked';                 // mutate the snapshot's record
+    return b.snapshot()['T1:submit'].locator === '#submitBtn';   // live store must be unaffected
+  });
+  check('ingestLiveResult writes nothing when verify_confidence is not HIGH', () => {
+    const b = B.makeBrain();
+    const test = { id: 'L1', steps: [{ _anchor: { stepId: 'submit', target: { bestLocator: '#submitBtn' } } }] };
+    const liveResult = { verify_confidence: 'MEDIUM', steps: [{ located: true }] };
+    return B.ingestLiveResult(b, test, liveResult) === 0 && b.get('L1', 'submit', document) === null;
+  });
+  check('ingestLiveResult writes every located step when verify_confidence is HIGH', () => {
+    stage.innerHTML = F.LOGIN_DOM;
+    const b = B.makeBrain();
+    const test = {
+      id: 'L1',
+      steps: [
+        { _anchor: { stepId: 'email',  target: { bestLocator: "[data-testid='login-email']" } } },
+        { _anchor: { stepId: 'submit', target: { bestLocator: '#submitBtn' } } }
+      ]
+    };
+    const liveResult = { verify_confidence: 'HIGH', steps: [{ located: true }, { located: true }] };
+    const n = B.ingestLiveResult(b, test, liveResult);
+    return n === 2 && !!b.get('L1', 'email', document) && !!b.get('L1', 'submit', document);
+  });
+  check('ingestLiveResult skips a step that was not located even when the test overall verified HIGH', () => {
+    stage.innerHTML = F.LOGIN_DOM;
+    const b = B.makeBrain();
+    const test = { id: 'L1', steps: [{ _anchor: { stepId: 'sso', target: { bestLocator: '#sso' } } }] };
+    const liveResult = { verify_confidence: 'HIGH', steps: [{ located: false }] };
+    return B.ingestLiveResult(b, test, liveResult) === 0;
+  });
+
+  const pass = rows.filter(r => r.passed).length, fail = rows.length - pass;
+
+  // ---- measured before/after: cold run vs primed run of the SAME fixture through S7 + brain ----
+  stage.innerHTML = F.LOGIN_DOM;
+  const suite = TG.authorTests(document, {});
+  const l1 = suite.tests.find(t => t.id === 'L1');
+
+  function mountInteractive() {
+    stage.innerHTML = F.LOGIN_DOM;
+    const form = stage.querySelector('form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = stage.querySelector('[type="email"]').value.trim();
+      const pwd = stage.querySelector('[type="password"]').value.trim();
+      if (email && /secret|valid/i.test(pwd)) stage.innerHTML = F.DASHBOARD_DOM;
+      else stage.innerHTML = F.ERROR_DOM;
+    });
+  }
+  document.addEventListener('click', function (e) { if (stage.contains(e.target) && e.target.closest('a[href]')) e.preventDefault(); }, true);
+
+  const brain = B.makeBrain();
+
+  // RUN 1 (cold): brain.get() before matchStep on each fill/click step -> expect all misses.
+  mountInteractive();
+  const run1Misses = l1.steps.filter(s => s._anchor).map(s => brain.get('L1', s._anchor.stepId, document) === null);
+  const run1AllCold = run1Misses.every(Boolean);
+  const live1 = await RT.executeLive(stage, l1);
+  const written = B.ingestLiveResult(brain, l1, live1);
+
+  // RUN 2 (primed): re-mount the SAME fixture; brain.get() should now HIT for every located step from run 1.
+  mountInteractive();
+  const run2Hits = l1.steps.filter(s => s._anchor).map(s => ({ stepId: s._anchor.stepId, hit: brain.get('L1', s._anchor.stepId, document) !== null }));
+  const hitCount = run2Hits.filter(r => r.hit).length;
+  const hitRate = run2Hits.length ? Math.round(100 * hitCount / run2Hits.length) : 0;
+
+  window.__S2_TESTS = { rows, pass, fail, live1, written, run1AllCold, run2Hits, hitRate, brainSnapshot: brain.snapshot() };
+
+  // ---- render ----
+  let h = '';
+  h += '<div class="banner">S2 gate: <b>' + pass + '/' + rows.length + ' unit checks passed</b> '
+     + (fail === 0 ? '<span class="ok">GO</span>' : '<span class="bad">FAIL (' + fail + ')</span>') + '</div>';
+  h += '<h2>Unit corpus (put/get/ingest scenarios)</h2><table><tr><th>#</th><th>check</th><th>result</th><th>detail</th></tr>';
+  rows.forEach((r, i) => { h += '<tr><td>' + (i + 1) + '</td><td>' + r.label + '</td>'
+    + '<td class="' + (r.passed ? 'PASS' : 'FAIL') + '">' + (r.passed ? 'PASS' : 'FAIL') + '</td><td>' + r.detail + '</td></tr>'; });
+  h += '</table>';
+
+  h += '<h2>Measured before/after — real S7 executeLive, cold vs primed</h2>';
+  h += '<table><tr><th>metric</th><th>before S2 (run 1, cold brain)</th><th>after S2 (run 2, primed brain)</th><th>tag</th></tr>';
+  h += '<tr><td>brain hits before resolving any step</td><td>' + (run1AllCold ? '0/'+run1Misses.length+' (all cold, as expected)' : 'UNEXPECTED HIT') + '</td>'
+     + '<td>' + hitCount + '/' + run2Hits.length + ' (' + hitRate + '%)</td><td>measured</td></tr>';
+  h += '<tr><td>run-1 live outcome (informs whether ingest should write anything)</td><td colspan="2">'
+     + live1.outcome + ' / verify_confidence=' + live1.verify_confidence + ' → brain writes: ' + written + '</td><td>measured</td></tr>';
+  h += '</table>';
+  h += '<div class="row">Per-step hit detail (run 2): ' + run2Hits.map(r => r.stepId + ':' + (r.hit ? '<span class="ok">HIT</span>' : '<span class="warn">miss</span>')).join('  ') + '</div>';
+  h += '<p><small>Honest bound: hit rate is measured on ONE fixture, ONE run pair — not a claim about natural heal/cache rate '
+     + 'in production (that needs S4\'s benchmark corpus across drift variants). Steps with no real CSS anchor (e.g. SSO/forgot '
+     + 'if they only resolve via role+name) are expected to stay cold by design (the real-anchor-only rule) — a 0% rate on '
+     + 'those specific steps is correct behavior, not a bug.</small></p>';
+
+  out.innerHTML = h;
+})();
+</script>
+</body></html>

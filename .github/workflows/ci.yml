@@ -1,0 +1,36 @@
+# Minimal CI: wiki structure tests + harness bundle+unit tests.
+# Deliberately does NOT run trials — those need target_repo which is external
+# to this repo (see README §Setup and docs/planning/next-actions.md T4).
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  wiki-tests:
+    name: wiki structure & invariant tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run wiki/tests/run.sh
+        run: bash wiki/tests/run.sh
+
+  harness-tests:
+    name: harness bundle + translate-locator
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        working-directory: experiment
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+        run: npm install --no-audit --no-fund
+      - name: npm test (bundle + translate-locator unit tests)
+        working-directory: experiment
+        run: npm test
