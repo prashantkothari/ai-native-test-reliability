@@ -35,7 +35,7 @@ const outFile = path.join(ROOT, 'logs/compare_a1.jsonl');
 fs.mkdirSync(path.dirname(outFile), { recursive: true });
 fs.writeFileSync(outFile, '');
 
-const libSha = execSync('git -C lib rev-parse HEAD', { cwd: ROOT }).toString().trim();
+const libSha = fs.readFileSync(path.join(ROOT, 'SELFHEAL_VERSION'), 'utf8').trim();
 const targetSha = execSync('git -C target_repo rev-parse HEAD', { cwd: ROOT }).toString().trim();
 
 // Compute identity hash on a locator's first matching element. Attribute /
