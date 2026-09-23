@@ -1,5 +1,8 @@
 # Consolidated findings — AI-Native Test Reliability Slice-1
 
+> **Migration note (2026-09-23):** references below to `preflight7/ai-native-test-reliability` or `preflight7/ai-for-qa` describe where this experiment was originally run. The canonical current location is `prashantkothari/ai-native-test-reliability` (main); those preflight7 repos have been archived. Historical body content below is preserved verbatim.
+
+
 **Date:** 2026-09-03
 **Status:** Stopped. Not shipping further code. This document supersedes p1_results.md, p1_v2_results.md, p2_results.md, and three_gaps_closed.md as the honest read of what happened.
 

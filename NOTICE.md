@@ -21,10 +21,7 @@ planning docs assumed — this branch's own "bump lib submodule" commits (predat
 consolidation) had already advanced the pin past that point. `dc5a87f` is a strict
 superset of `599dca1c` (verified via `git merge-base --is-ancestor`).
 
-**License note:** ai-for-qa (both `prashantkothari/ai-for-qa` and its `preflight7` fork)
-carries no LICENSE file as of 2026-09-21. Vendoring is treated as self-owned code
-consolidation (source and destination repos share the same owner). A future contributor
-adding a LICENSE to either repo should update this notice.
+**License note:** `prashantkothari/ai-for-qa` carries no LICENSE file as of 2026-09-23. Vendoring is treated as self-owned code consolidation. The `dc5a87f` commit was authored in a fork; it is fetchable directly from `prashantkothari/ai-for-qa` via `git fetch <sha>` (GitHub keeps fork-network objects reachable from any peer remote). A future contributor adding a LICENSE should update this notice.
 
 ## Vendored from prashantkothari/ai-native-test-reliability
 

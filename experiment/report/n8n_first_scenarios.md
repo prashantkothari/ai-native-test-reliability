@@ -1,5 +1,8 @@
 # n8n first scenarios — 3 inline steps executed
 
+> **Migration note (2026-09-23):** references below to `preflight7/ai-native-test-reliability` or `preflight7/ai-for-qa` describe where this experiment was originally run. The canonical current location is `prashantkothari/ai-native-test-reliability` (main); those preflight7 repos have been archived. Historical body content below is preserved verbatim.
+
+
 **Date:** 2026-09-09
 **Target:** n8n 1.60.0 at `http://localhost:5678`, workflow editor page (`/workflow/new`), post-owner-account setup, overlays cleared.
 **Library:** submodule at `dded40e` on `feature/heal-policy` (includes matchAndEmit + heal_policy + NEW `data-test-id` recognition).
