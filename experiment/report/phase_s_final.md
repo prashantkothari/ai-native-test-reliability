@@ -1,5 +1,8 @@
 # Phase S final — USP validation on n8n with numbers
 
+> **Migration note (2026-09-23):** references below to `preflight7/ai-native-test-reliability` or `preflight7/ai-for-qa` describe where this experiment was originally run. The canonical current location is `prashantkothari/ai-native-test-reliability` (main); those preflight7 repos have been archived. Historical body content below is preserved verbatim.
+
+
 **Date:** 2026-09-10
 **Target:** n8n 1.60.0 at `localhost:5678`, workflow editor page
 **Library:** submodule `feature/heal-policy` @ `dc5a87f` (matchAndEmit + heal_policy + data-test-id + widened candidate pool)
