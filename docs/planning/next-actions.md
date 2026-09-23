@@ -75,17 +75,19 @@ Then verify `logs/trials.jsonl` shows `sum(false_heal) == 0`.
 
 Whichever you pick, the SHA should be recorded in a new committed file like `experiment/TARGET_REPO_SHA`, mirroring `SELFHEAL_VERSION`, so it's reproducible.
 
-### T5 — Wire `npm test` in `experiment/package.json` (Doable)
+### T5 — Wire `npm test` in `experiment/package.json` (Doable) — DONE 2026-09-24
 
 **What.** A customer runs `npm test` today and gets `Error: no test specified`. Trivial to fix.
 
 **How.** Change `experiment/package.json`'s `scripts.test` to at least `node harness/translate-locator.test.js`. Ideally also chain the wiki tests: `test:translator && test:dual_mode && test:selfheal_version`. Small PR.
 
-### T6 — Wire the 6 vendored self-heal test HTMLs to a runnable test target (Doable)
+### T6 — Wire the 6 vendored self-heal test HTMLs to a runnable test target (Doable) — DEFERRED (see note)
 
 **What.** We vendored 6 test HTMLs (`self-heal/tests/*.html`, `self-heal/schemas/tests.html`, `self-heal/brain/tests.html`, `self-heal/pipeline/lever-tests.html`) but nothing runs them. They're per-module regression coverage — currently dead weight.
 
 **How.** Either (a) add a tiny `python3 -m http.server` + Playwright headless runner that opens each and reads the pass/fail count, or (b) skip them and document why in `wiki/files.md`. My recommendation: (a), lands as a new script `experiment/harness/run_module_tests.mjs`. ~40 lines.
+**Deferred rationale (2026-09-24):** these tests exercise vendored library code that is pinned at `dc5a87f` and never edited from within this repo. Zero regression risk until we bump `SELFHEAL_VERSION`. Revisit when the vendored lib is bumped — at that point, wiring the HTMLs becomes P1.
+
 
 ---
 
@@ -143,21 +145,25 @@ My leaning: (a). Historical evidence should not sit in the runner's write path.
 - Add a `Historical libSha` header table to each report (2 lines per file).
 - Or: fold everything into a single canonical `experiment/report/README.md` that reconciles.
 
-### T13 — Session archiving (Doable)
+### T13 — Session archiving (Doable) — DEFERRED (see note)
 
 **What.** 17 stale `playwright-middleware`-group Claude Code sessions with dead worktrees. All their code is on `main` via the consolidation. I can bulk-archive them via `mcp__ccd_session_mgmt__archive_session`.
+**Deferred rationale (2026-09-24):** each of the 17 archives requires an individual approval click in the app (per tool guidance). Not worth 17 clicks for a cosmetic sidebar cleanup. Better path: enable `auto_archive_on_pr_close` in Claude Code settings for future work; sweep the existing 17 in bulk when you're at the keyboard, or leave them (they don't affect anything).
 
-### T14 — Add basic CI (Doable)
+
+### T14 — Add basic CI (Doable) — DONE 2026-09-24
 
 **What.** Currently no CI. Even a minimal GitHub Actions workflow running `wiki/tests/run.sh` and `node harness/translate-locator.test.js` on every push to main would catch regressions the next contributor might miss.
 
 **How.** Small `.github/workflows/test.yml`, ~30 lines.
 
-### T15 — `wiki/tools/sync.sh` weekly cron (Doable)
+### T15 — `wiki/tools/sync.sh` weekly cron (Doable) — DEFERRED (see note)
 
 **What.** `wiki/tools/sync.sh` exists and is already correct (bumps `Last-verified:` header, sets `Drift-open:`, writes `wiki/.sync-status`), but no scheduler runs it. Reference in README says "Weekly wiki sync. Runs in CI + locally" but no CI is wired.
 
 **How.** Add to the same GitHub Actions workflow as T14 on a `schedule:` trigger.
+**Deferred rationale (2026-09-24):** requires GitHub Actions to commit auto-updates back to `main`, which needs a token with write access (either a PAT stored as a secret or the built-in `GITHUB_TOKEN` with `contents: write`). Real config lift + security surface. Meanwhile, actual drift is caught on every PR that touches `wiki/` because the wiki tests run in T14's CI. Not worth the automation complexity right now.
+
 
 ---
 
@@ -177,8 +183,8 @@ If you want a single reasonable path forward, roughly:
 1. **T1** (5 min, owner only) → unblocks T2.
 2. **T2** (1 min, delegable) → clean remote.
 3. **T4 decision** — pick target app + SHA. Then I can run T4 end-to-end.
-4. **T5, T6, T14, T15** as one PR — turns `npm test` into a real thing, wires CI, gets weekly sync running.
+4. **T5 + T14** — DONE (PR #10). `npm test` bundles + runs translator tests; CI runs wiki tests + harness tests on every PR/push. T6 and T15 deferred with rationale documented in-doc.
 5. **T7, T8, T9** — three decisions, then execute.
 6. Everything else (T10, T11, T12, T13) is optional / at leisure.
 
-I can execute any of T2, T4 (given a target), T5, T6, T12, T13, T14, T15 as PRs without further input. T1 and T3 are yours only. T7–T11 need your decision before I proceed.
+I can execute T4 (given a target), T12, T13 (17 approval clicks needed), and future work as PRs without further input. T1 and T3 are yours only. T7–T11 need your decision before I proceed.

@@ -6,7 +6,8 @@
   "scripts": {
     "bundle": "node harness/bundle-library.js",
     "test:translator": "node harness/translate-locator.test.js",
-    "trial": "node harness/run_trials.js"
+    "trial": "node harness/run_trials.js",
+    "test": "npm run bundle && npm run test:translator"
   },
   "devDependencies": {
     "playwright": "^1.47.0"
