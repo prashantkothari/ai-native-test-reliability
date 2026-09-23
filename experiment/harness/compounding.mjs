@@ -31,7 +31,7 @@ const BUNDLE_PATH = path.join(ROOT, 'logs', 'selfheal-bundle.js');
 const URL_TARGET = process.env.URL_TARGET || 'http://localhost:3002/';
 
 const BUNDLE = fs.readFileSync(BUNDLE_PATH, 'utf8');
-const libSha = execSync('git -C lib rev-parse HEAD', { cwd: ROOT }).toString().trim();
+const libSha = fs.readFileSync(path.join(ROOT, 'SELFHEAL_VERSION'), 'utf8').trim();
 const targetSha = execSync('git -C target_repo rev-parse HEAD', { cwd: ROOT }).toString().trim();
 
 const LOG = path.join(ROOT, 'logs', 'compounding.jsonl');

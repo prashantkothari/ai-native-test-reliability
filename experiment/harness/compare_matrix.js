@@ -54,7 +54,7 @@ const outFile = path.join(ROOT, 'logs/matrix_d1_d8.jsonl');
 fs.mkdirSync(path.dirname(outFile), { recursive: true });
 fs.writeFileSync(outFile, '');
 
-const libSha = execSync('git -C lib rev-parse HEAD', { cwd: ROOT }).toString().trim();
+const libSha = fs.readFileSync(path.join(ROOT, 'SELFHEAL_VERSION'), 'utf8').trim();
 const targetShaBase = execSync('git -C target_repo rev-parse HEAD', { cwd: ROOT }).toString().trim();
 
 function gitApply(rel) {
