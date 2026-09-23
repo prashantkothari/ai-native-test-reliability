@@ -20,4 +20,6 @@ Scope: source files under `docs/` and `experiment/self-heal/`. Every non-README 
 | [docs/research/test-recorder-survey-2026-09.md](../docs/research/test-recorder-survey-2026-09.md) | Recorder-fork survey. | built |
 | [docs/research/test-recorder-survey-2026-09-v2.md](../docs/research/test-recorder-survey-2026-09-v2.md) | Recorder-fork survey (v2 revision). | built |
 
+| [docs/planning/next-actions.md](../docs/planning/next-actions.md) | Comprehensive future-work punch list — 15 tasks, dependency-ordered, with decisions vs. doable items separated. | built |
+
 <!-- Add rows here as new source files land. Sync will flag missing entries. -->
