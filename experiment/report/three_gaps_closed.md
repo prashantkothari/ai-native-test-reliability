@@ -1,5 +1,8 @@
 # Three Gaps Closed — heal_policy, iframe-scope, control-flow
 
+> **Path note (2026-09-24):** references below to `logs/trials.jsonl` (or `experiment/logs/trials.jsonl`) now live at `experiment/report/trials-archive.jsonl`. The file was moved out of `run_trials.js`'s truncate-on-run write path to preserve the historical Excalidraw-era evidence backing this report's claims. Data unchanged; only the path moved.
+
+
 **Date:** 2026-09-03
 **Branch (worktree):** `feature/three-gaps`
 **Branch (library submodule):** `feature/heal-policy`
