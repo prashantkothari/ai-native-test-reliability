@@ -1,0 +1,142 @@
+[
+  {
+    "id": "case-01",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "button",
+    "drift": "decoy-insertion"
+  },
+  {
+    "id": "case-02",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "button",
+    "drift": "class-rename"
+  },
+  {
+    "id": "case-03",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "wrap-in-div"
+  },
+  {
+    "id": "case-04",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "node-swap"
+  },
+  {
+    "id": "case-05",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "wrap-in-div"
+  },
+  {
+    "id": "case-06",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "input",
+    "drift": "aria-text-edit"
+  },
+  {
+    "id": "case-07",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "button",
+    "drift": "sibling-reorder"
+  },
+  {
+    "id": "case-08",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "wrap-in-div"
+  },
+  {
+    "id": "case-09",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "class-rename"
+  },
+  {
+    "id": "case-10",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "button",
+    "drift": "sibling-reorder"
+  },
+  {
+    "id": "case-11",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "button",
+    "drift": "aria-text-edit"
+  },
+  {
+    "id": "case-12",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "button",
+    "drift": "decoy-insertion"
+  },
+  {
+    "id": "case-13",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "class-rename"
+  },
+  {
+    "id": "case-14",
+    "truth_index": 1,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "decoy-insertion"
+  },
+  {
+    "id": "case-15",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "aria-text-edit"
+  },
+  {
+    "id": "case-16",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "input",
+    "drift": "sibling-reorder"
+  },
+  {
+    "id": "case-17",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "button",
+    "drift": "node-swap"
+  },
+  {
+    "id": "case-18",
+    "truth_index": 1,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "decoy-insertion"
+  },
+  {
+    "id": "case-19",
+    "truth_index": 1,
+    "candidate_count": 8,
+    "control_type": "link",
+    "drift": "decoy-insertion"
+  },
+  {
+    "id": "case-20",
+    "truth_index": 0,
+    "candidate_count": 8,
+    "control_type": "button",
+    "drift": "decoy-insertion"
+  }
+]
