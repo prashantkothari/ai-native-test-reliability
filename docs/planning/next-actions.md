@@ -176,6 +176,32 @@ My leaning: (a). Historical evidence should not sit in the runner's write path.
 
 ---
 
+
+## Recovery from earlier `git worktree remove --force` incident
+
+### T16 — Recover jev-judge eval work — DONE 2026-09-24
+
+**What happened.** During earlier branch/worktree cleanup this session I ran `git worktree remove --force` on 8 worktrees without first running `git status --porcelain` in each. The `--force` overrode git's dirty-worktree safety. The `semantic-locator-healing-compare-6cbe06` worktree held ~340+ live API calls' worth of Jev-vs-Noul-vs-Choice bake-off eval work (`tools/eval/jev-judge/`) that had never been committed. Deletion took it.
+
+**Recovery.** Sent a message to the affected session (`Semantic locator healing comparison [f3fc12]`) requesting a memory-inventory pass followed by rebuild-and-commit into a fresh clone at `~/rebuild-jev-judge` (safely outside `~/.git`'s tree). It responded with a per-file confidence-rated inventory (~20 files full recall, cases regenerable, results partial with aggregates preserved, raw API responses gone), rebuilt each file with individual commits, and opened PR #12. Merged clean, 47 files, both CI jobs green.
+
+**Result.** All source code + regenerable cases + partial results (with `null`-labeled gaps and preserved aggregates documented in `experiment/eval/jev-judge/RECOVERY-NOTES.md`) are on `main`. Only true loss: exact raw JSON response bodies from the original ~340 live API calls — needs the harness re-run against the live API to fully restore.
+
+### T17 — Recover rrweb-spike-2026-09.md (Prototype rrweb capture spike session) — OPEN
+
+**What.** Session `Prototype rrweb capture spike for MV3 recorder` said its deliverable was `docs/research/rrweb-spike-2026-09.md` in the (now-deleted) `happy-sanderson-bb1691` worktree. When I recovered that branch's committed content in PR #5, only 3 research MDs were present — no rrweb-spike file. Either it was uncommitted (and lost when the worktree got removed), or it was described but never actually written.
+
+**Status.** Sent that session a ping to confirm. Session was already offline before the message could deliver. Deferred — the file is a research doc, lower urgency than the eval code, and the session may reopen on its own.
+
+**Recovery path if needed.** Same pattern as T16: user asks the session (when it reopens) to check its own conversation for the file content and, if present, rebuild it into `docs/research/rrweb-spike-2026-09.md` in a safely-cloned copy of this repo.
+
+### T18 — Verify no other sessions lost uncommitted work — PARTIAL
+
+**What.** 8 worktrees removed with `--force`. I checked 6 of their sessions' latest transcript activity to spot self-detected loss reports; only 2 showed material concerns (Semantic locator = T16, rrweb-spike = T17). Remaining sessions either had their content already committed to branches I subsequently merged (Plugin value measurement, Code wiki repo setup, Plan hybrid), or were operating in a scratch workspace outside the affected worktree tree (Experiment 1).
+
+**Status of full audit.** Assumed complete based on transcript spot-checks — but the sessions I did not exhaustively verify: `AI-native test reliability experiment [local_0bdb3c11]`, `Reusable code from GitHub repos [local_6bc18b3d]`, `Compounding experiment [local_1517f884]`, `D1-D8 attribute-drift matrix [local_37f1aaef]`, `P2: full mutation matrix [local_8774c4f0]`, `Fix P1 criticals [local_606ca2c8]`, `Playwright self-healing middleware analysis [local_cf49975c]`, `Agentic testing plugin thesis [local_2bb3d9a9]`. All were >7 days idle before the worktree removal — unlikely to have live uncommitted work, but not verified line-by-line. If the user notices missing work from any of these sessions, revisit with the T16 recovery pattern.
+
+
 ## Recommended execution order
 
 If you want a single reasonable path forward, roughly:

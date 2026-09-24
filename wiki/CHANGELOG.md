@@ -2,6 +2,12 @@
 
 Append-only. One line per sync run or manual edit. Newest at top.
 
+- 2026-09-24 — recovery: jev-judge eval (~340-call bake-off harness) rebuilt via peer session
+  after earlier `git worktree remove --force` mistake — merged as PR #12 with 47 files, cases
+  reproduce byte-identical, results partial-with-documented-null-gaps. Also merged PR #11 fixing
+  misplaced Documents/... paths from peer session's direct-to-main push. See docs/planning/
+  next-actions.md T16-T18 for details.
+
 - 2026-09-21 — consolidation S4 (verification): Probe 1a (bundle byte-diff vs true
   pre-vendor baseline, captured from a fresh chip-c-a1-scaffold checkout with the real
   submodule initialized) PASS, byte-identical, 100072 bytes. Probe 1b (translate-locator
