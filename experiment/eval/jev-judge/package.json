@@ -1,0 +1,14 @@
+{
+  "name": "jev-judge-eval",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prevalidate": "node prevalidate.mjs"
+  },
+  "dependencies": {
+    "@typesafe-ai/sdk": "*",
+    "@anthropic-ai/sdk": "*",
+    "dotenv": "*",
+    "linkedom": "^0.18.13"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "model": "jev-1.13.0",
+  "answers": {
+    "reliable_answer": {
+      "type": "noul",
+      "noul": 0.39
+    },
+    "decoy_weight_correct": {
+      "type": "noul",
+      "noul": 0.78
+    }
+  },
+  "usage": {
+    "input_tokens": 3653,
+    "output_tokens": 42
+  }
+}

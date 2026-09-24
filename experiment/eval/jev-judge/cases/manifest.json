@@ -1,0 +1,422 @@
+[
+  {
+    "id": "case-01",
+    "target_id": "t-signin",
+    "control_type": "button",
+    "drift": "decoy-insertion",
+    "descriptor": {
+      "role": "button",
+      "name": "Sign in",
+      "tag": "button",
+      "testid": "signin",
+      "id": null,
+      "class": "btn btn-primary",
+      "href": null,
+      "container": {
+        "role": "navigation",
+        "name": "Global"
+      }
+    },
+    "dom_html": "cases/case-01.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-02",
+    "target_id": "t-menu-toggle",
+    "control_type": "button",
+    "drift": "class-rename",
+    "descriptor": {
+      "role": "button",
+      "name": "Toggle menu",
+      "tag": "button",
+      "testid": null,
+      "id": null,
+      "class": "icon-btn",
+      "href": null,
+      "container": {
+        "role": "navigation",
+        "name": "Global"
+      }
+    },
+    "dom_html": "cases/case-02.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-03",
+    "target_id": "t-nav-products",
+    "control_type": "link",
+    "drift": "wrap-in-div",
+    "descriptor": {
+      "role": "link",
+      "name": "Products",
+      "tag": "a",
+      "testid": null,
+      "id": null,
+      "class": "nav-link",
+      "href": "/products",
+      "container": {
+        "role": "navigation",
+        "name": "Global"
+      }
+    },
+    "dom_html": "cases/case-03.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-04",
+    "target_id": "t-nav-docs",
+    "control_type": "link",
+    "drift": "node-swap",
+    "descriptor": {
+      "role": "link",
+      "name": "Docs",
+      "tag": "a",
+      "testid": null,
+      "id": null,
+      "class": "nav-link",
+      "href": "/docs",
+      "container": {
+        "role": "navigation",
+        "name": "Global"
+      }
+    },
+    "dom_html": "cases/case-04.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-05",
+    "target_id": "t-get-started",
+    "control_type": "link",
+    "drift": "wrap-in-div",
+    "descriptor": {
+      "role": "link",
+      "name": "Get started",
+      "tag": "a",
+      "testid": "get-started",
+      "id": null,
+      "class": "btn btn-cta",
+      "href": "/get-started",
+      "container": {
+        "role": "main",
+        "name": "Anthropic TypeScript SDK\n\n    \n      Access Claude models from Node.js and TypeS"
+      }
+    },
+    "dom_html": "cases/case-05.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-06",
+    "target_id": "t-search-input",
+    "control_type": "input",
+    "drift": "aria-text-edit",
+    "descriptor": {
+      "role": "textbox",
+      "name": "Search docs",
+      "tag": "input",
+      "testid": null,
+      "id": "q",
+      "class": null,
+      "href": null,
+      "container": {
+        "role": "search",
+        "name": "Search:\n        \n        Search"
+      }
+    },
+    "dom_html": "cases/case-06.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-07",
+    "target_id": "t-search-submit",
+    "control_type": "button",
+    "drift": "sibling-reorder",
+    "descriptor": {
+      "role": "button",
+      "name": "Search",
+      "tag": "button",
+      "testid": null,
+      "id": null,
+      "class": "btn btn-search",
+      "href": null,
+      "container": {
+        "role": "search",
+        "name": "Search:\n        \n        Search"
+      }
+    },
+    "dom_html": "cases/case-07.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-08",
+    "target_id": "t-contributor-bob",
+    "control_type": "link",
+    "drift": "wrap-in-div",
+    "descriptor": {
+      "role": "link",
+      "name": "bob",
+      "tag": "a",
+      "testid": null,
+      "id": null,
+      "class": "contributor-link",
+      "href": "/user/bob",
+      "container": {
+        "role": "main",
+        "name": "Anthropic TypeScript SDK\n\n    \n      Access Claude models from Node.js and TypeS"
+      }
+    },
+    "dom_html": "cases/case-08.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-09",
+    "target_id": "t-footer-terms",
+    "control_type": "link",
+    "drift": "class-rename",
+    "descriptor": {
+      "role": "link",
+      "name": "Terms",
+      "tag": "a",
+      "testid": null,
+      "id": null,
+      "class": "footer-link",
+      "href": "/legal/terms",
+      "container": {
+        "role": "footer",
+        "name": "Privacy\n    Terms\n    Send feedback"
+      }
+    },
+    "dom_html": "cases/case-09.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-10",
+    "target_id": "t-feedback",
+    "control_type": "button",
+    "drift": "sibling-reorder",
+    "descriptor": {
+      "role": "button",
+      "name": "Send feedback",
+      "tag": "button",
+      "testid": "feedback",
+      "id": null,
+      "class": "btn btn-ghost",
+      "href": null,
+      "container": {
+        "role": "footer",
+        "name": "Privacy\n    Terms\n    Send feedback"
+      }
+    },
+    "dom_html": "cases/case-10.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-11",
+    "target_id": "t-signin",
+    "control_type": "button",
+    "drift": "aria-text-edit",
+    "descriptor": {
+      "role": "button",
+      "name": "Sign in",
+      "tag": "button",
+      "testid": "signin",
+      "id": null,
+      "class": "btn btn-primary",
+      "href": null,
+      "container": {
+        "role": "navigation",
+        "name": "Global"
+      }
+    },
+    "dom_html": "cases/case-11.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-12",
+    "target_id": "t-menu-toggle",
+    "control_type": "button",
+    "drift": "decoy-insertion",
+    "descriptor": {
+      "role": "button",
+      "name": "Toggle menu",
+      "tag": "button",
+      "testid": null,
+      "id": null,
+      "class": "icon-btn",
+      "href": null,
+      "container": {
+        "role": "navigation",
+        "name": "Global"
+      }
+    },
+    "dom_html": "cases/case-12.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-13",
+    "target_id": "t-nav-products",
+    "control_type": "link",
+    "drift": "class-rename",
+    "descriptor": {
+      "role": "link",
+      "name": "Products",
+      "tag": "a",
+      "testid": null,
+      "id": null,
+      "class": "nav-link",
+      "href": "/products",
+      "container": {
+        "role": "navigation",
+        "name": "Global"
+      }
+    },
+    "dom_html": "cases/case-13.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-14",
+    "target_id": "t-nav-docs",
+    "control_type": "link",
+    "drift": "decoy-insertion",
+    "descriptor": {
+      "role": "link",
+      "name": "Docs",
+      "tag": "a",
+      "testid": null,
+      "id": null,
+      "class": "nav-link",
+      "href": "/docs",
+      "container": {
+        "role": "navigation",
+        "name": "Global"
+      }
+    },
+    "dom_html": "cases/case-14.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-15",
+    "target_id": "t-get-started",
+    "control_type": "link",
+    "drift": "aria-text-edit",
+    "descriptor": {
+      "role": "link",
+      "name": "Get started",
+      "tag": "a",
+      "testid": "get-started",
+      "id": null,
+      "class": "btn btn-cta",
+      "href": "/get-started",
+      "container": {
+        "role": "main",
+        "name": "Anthropic TypeScript SDK\n\n    \n      Access Claude models from Node.js and TypeS"
+      }
+    },
+    "dom_html": "cases/case-15.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-16",
+    "target_id": "t-search-input",
+    "control_type": "input",
+    "drift": "sibling-reorder",
+    "descriptor": {
+      "role": "textbox",
+      "name": "Search docs",
+      "tag": "input",
+      "testid": null,
+      "id": "q",
+      "class": null,
+      "href": null,
+      "container": {
+        "role": "search",
+        "name": "Search:\n        \n        Search"
+      }
+    },
+    "dom_html": "cases/case-16.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-17",
+    "target_id": "t-search-submit",
+    "control_type": "button",
+    "drift": "node-swap",
+    "descriptor": {
+      "role": "button",
+      "name": "Search",
+      "tag": "button",
+      "testid": null,
+      "id": null,
+      "class": "btn btn-search",
+      "href": null,
+      "container": {
+        "role": "search",
+        "name": "Search:\n        \n        Search"
+      }
+    },
+    "dom_html": "cases/case-17.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-18",
+    "target_id": "t-contributor-bob",
+    "control_type": "link",
+    "drift": "decoy-insertion",
+    "descriptor": {
+      "role": "link",
+      "name": "bob",
+      "tag": "a",
+      "testid": null,
+      "id": null,
+      "class": "contributor-link",
+      "href": "/user/bob",
+      "container": {
+        "role": "main",
+        "name": "Anthropic TypeScript SDK\n\n    \n      Access Claude models from Node.js and TypeS"
+      }
+    },
+    "dom_html": "cases/case-18.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-19",
+    "target_id": "t-footer-terms",
+    "control_type": "link",
+    "drift": "decoy-insertion",
+    "descriptor": {
+      "role": "link",
+      "name": "Terms",
+      "tag": "a",
+      "testid": null,
+      "id": null,
+      "class": "footer-link",
+      "href": "/legal/terms",
+      "container": {
+        "role": "footer",
+        "name": "Privacy\n    Terms\n    Send feedback"
+      }
+    },
+    "dom_html": "cases/case-19.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  },
+  {
+    "id": "case-20",
+    "target_id": "t-feedback",
+    "control_type": "button",
+    "drift": "decoy-insertion",
+    "descriptor": {
+      "role": "button",
+      "name": "Send feedback",
+      "tag": "button",
+      "testid": "feedback",
+      "id": null,
+      "class": "btn btn-ghost",
+      "href": null,
+      "container": {
+        "role": "footer",
+        "name": "Privacy\n    Terms\n    Send feedback"
+      }
+    },
+    "dom_html": "cases/case-20.html",
+    "truth_marker": "data-eval-truth=\"1\""
+  }
+]

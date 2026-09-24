@@ -1,0 +1,26 @@
+{
+  "judge": "claude-sonnet-5 (inline, this session, blind to ground truth and to drift labels, same rubric as lib/llm-judge.mjs)",
+  "note": "Regenerated after fixing the decoy-label leak (mutate.mjs no longer writes a literal 'decoy' class) and the drift/control_type field leak in dump-for-inline-judge.mjs. For the 4 decoy cases with no testid anchor on either candidate (12, 14, 18, 19), the two candidates are now genuinely indistinguishable from the given fields, so confidence is honestly reported near 0.5/0.5 rather than guessed high — this is intentional, not an error.",
+  "cases": {
+    "case-01": [0.93, 0.35, 0.02, 0.01, 0.01, 0.01, 0.01, 0.02],
+    "case-02": [0.93, 0.02, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02],
+    "case-03": [0.95, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.01],
+    "case-04": [0.80, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.01],
+    "case-05": [0.96, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-06": [0.90, 0.03, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-07": [0.93, 0.02, 0.02, 0.03, 0.02, 0.02, 0.05, 0.01],
+    "case-08": [0.96, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-09": [0.94, 0.02, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-10": [0.94, 0.02, 0.02, 0.02, 0.01, 0.01, 0.01, 0.01],
+    "case-11": [0.92, 0.02, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02],
+    "case-12": [0.50, 0.48, 0.02, 0.01, 0.01, 0.01, 0.01, 0.02],
+    "case-13": [0.94, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-14": [0.48, 0.50, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-15": [0.93, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-16": [0.94, 0.03, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-17": [0.85, 0.03, 0.02, 0.02, 0.02, 0.01, 0.10, 0.01],
+    "case-18": [0.48, 0.50, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-19": [0.47, 0.50, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01],
+    "case-20": [0.93, 0.30, 0.02, 0.02, 0.02, 0.01, 0.01, 0.01]
+  }
+}
