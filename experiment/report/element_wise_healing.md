@@ -1,5 +1,8 @@
 # Element-wise healing + flakiness report
 
+> **Path note (2026-09-24):** references below to `logs/trials.jsonl` (or `experiment/logs/trials.jsonl`) now live at `experiment/report/trials-archive.jsonl`. The file was moved out of `run_trials.js`'s truncate-on-run write path to preserve the historical Excalidraw-era evidence backing this report's claims. Data unchanged; only the path moved.
+
+
 Sources: `logs/trials.jsonl` (P1/P2, 16 rows), `logs/compare_a1.jsonl` (Phase R min, 15 rows), `logs/matrix_d1_d8.jsonl` (D1-D8, 105 rows), `logs/compounding.jsonl` (C1+C2, 11 rows). Total: ~148 trials. Target: Excalidraw @ `e1bb9ff8`. Library: submodule @ `c8d47aa`.
 
 All heal-rates below are `passes / attempts`. Elements grouped by DOM identity. **Flakiness column** = variance within a mutation cell (0/5 or 5/5 = deterministic; anything in between = flaky).

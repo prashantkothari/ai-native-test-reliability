@@ -56,3 +56,9 @@ This repo consolidates three things that used to be separate: this monorepo, the
 `ai-for-qa` self-heal library (vendored, not a submodule), and a small Playwright-adapter
 proof-of-concept repo (`ai-native-test-reliability`) that turned out to be almost entirely
 duplicated here already. See `docs/planning/` for the full path that led here.
+
+## About `.claude/`
+
+The root-level `.claude/` directory holds Claude Code session config and a curated
+skills library used during development of this repo. It's optional dev tooling —
+ignore it if you're not using Claude Code, or use it as a jumping-off point if you are.

@@ -95,7 +95,7 @@ Whichever you pick, the SHA should be recorded in a new committed file like `exp
 
 ## Customer-facing polish (decisions the repo owner should make)
 
-### T7 — `.claude/` at repo root — keep or strip? (Decision)
+### T7 — `.claude/` at repo root — keep or strip? (Decision) — DONE 2026-09-24 (kept + README note)
 
 **What.** Root `.claude/` contains Claude Code session config + Matt-Pocock skills. First-time customer clones see it right next to `README.md` and wonder if it's required. Post-merge review §2.2 flagged this.
 
@@ -104,7 +104,7 @@ Whichever you pick, the SHA should be recorded in a new committed file like `exp
 - (b) Move to a separate `dev-tooling/` prefix or a private repo.
 - (c) Delete — you can always regenerate skill files.
 
-### T8 — `experiment/logs/trials.jsonl` — dev-machine paths (Decision)
+### T8 — `experiment/logs/trials.jsonl` — dev-machine paths (Decision) — DONE 2026-09-24 (moved to experiment/report/trials-archive.jsonl)
 
 **What.** Baked-in `/Users/prashant/Documents/playwright_middleware/.claude/worktrees/…` paths in the committed evidence data. Cited by 10 reports as historical evidence but also truncated by every `npm run trial` invocation.
 
@@ -115,7 +115,7 @@ Whichever you pick, the SHA should be recorded in a new committed file like `exp
 
 My leaning: (a). Historical evidence should not sit in the runner's write path.
 
-### T9 — LICENSE file (Decision)
+### T9 — LICENSE file (Decision) — DONE 2026-09-24 (MIT, Prashant Kothari)
 
 **What.** No `LICENSE` in either `prashantkothari/ai-native-test-reliability` or `prashantkothari/ai-for-qa`. GitHub defaults to "all rights reserved" — this is technically fine for self-owned code but blocks any future outside contribution.
 

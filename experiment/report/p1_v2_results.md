@@ -1,5 +1,8 @@
 # P1 v2 Results — heal path empirically exercised
 
+> **Path note (2026-09-24):** references below to `logs/trials.jsonl` (or `experiment/logs/trials.jsonl`) now live at `experiment/report/trials-archive.jsonl`. The file was moved out of `run_trials.js`'s truncate-on-run write path to preserve the historical Excalidraw-era evidence backing this report's claims. Data unchanged; only the path moved.
+
+
 **Date:** 2026-09-02
 **Pinned SHAs**
 - Library (`prashantkothari/ai-for-qa`): `a31ace4f199fa3824ba374208c8cc2a9b6f4e4ea`
