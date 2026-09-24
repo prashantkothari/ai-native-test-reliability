@@ -1,3 +1,14 @@
+> **Phase 2 update (2026-09-24):** the live harness was re-run end-to-end
+> against the real Jev API from a fresh clone. All `null` per-case token /
+> latency fields in `results/jev-run-results-unlabeled-decoy.json` and
+> `results/choice-run.json` are now real numbers. The rerun's aggregate
+> token counts reproduced the recovered aggregates within ±0.03%
+> (Noul 180,372 vs. 180,419 quoted; Choice 31,973 vs. 31,985 quoted —
+> tiny prompt-variance delta, no methodological difference). The
+> "Partial recall" and "Not recovered at all" sections below described
+> the state of these files BEFORE the rerun; they're kept as historical
+> record of what recovery could do from memory alone.
+
 # Recovery notes
 
 This directory was rebuilt from a Claude conversation transcript after another

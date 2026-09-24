@@ -1,62 +1,682 @@
 [
-  { "id": "case-01", "control_type": "button", "drift": "decoy-insertion", "target_id": "t-signin", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 1, "top_prob": 0.82, "abstained": false, "correct": false, "wrong_confident": true, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-02", "control_type": "button", "drift": "class-rename", "target_id": "t-menu-toggle", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.97, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-03", "control_type": "link", "drift": "wrap-in-div", "target_id": "t-nav-products", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.97, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-04", "control_type": "link", "drift": "node-swap", "target_id": "t-nav-docs", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.74, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-05", "control_type": "link", "drift": "wrap-in-div", "target_id": "t-get-started", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.97, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-06", "control_type": "input", "drift": "aria-text-edit", "target_id": "t-search-input", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.97, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-07", "control_type": "button", "drift": "sibling-reorder", "target_id": "t-search-submit", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.9, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-08", "control_type": "link", "drift": "wrap-in-div", "target_id": "t-contributor-bob", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.96, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-09", "control_type": "link", "drift": "class-rename", "target_id": "t-footer-terms", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.97, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-10", "control_type": "button", "drift": "sibling-reorder", "target_id": "t-feedback", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.96, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-11", "control_type": "button", "drift": "aria-text-edit", "target_id": "t-signin", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.97, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-12", "control_type": "button", "drift": "decoy-insertion", "target_id": "t-menu-toggle", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.76, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-13", "control_type": "link", "drift": "class-rename", "target_id": "t-nav-products", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.97, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-14", "control_type": "link", "drift": "decoy-insertion", "target_id": "t-nav-docs", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 1,
-    "baseline": { "pick_index": 0, "correct": false },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.82, "abstained": false, "correct": false, "wrong_confident": true, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-15", "control_type": "link", "drift": "aria-text-edit", "target_id": "t-get-started", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.97, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-16", "control_type": "input", "drift": "sibling-reorder", "target_id": "t-search-input", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.96, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-17", "control_type": "button", "drift": "node-swap", "target_id": "t-search-submit", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.96, "abstained": false, "correct": true, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-18", "control_type": "link", "drift": "decoy-insertion", "target_id": "t-contributor-bob", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 1,
-    "baseline": { "pick_index": 0, "correct": false },
-    "jev": { "probs": null, "argmax_index": 0, "top_prob": 0.75, "abstained": false, "correct": false, "wrong_confident": true, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-19", "control_type": "link", "drift": "decoy-insertion", "target_id": "t-footer-terms", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 1,
-    "baseline": { "pick_index": 0, "correct": false },
-    "jev": { "probs": null, "argmax_index": null, "top_prob": 0.62, "abstained": true, "correct": false, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } },
-  { "id": "case-20", "control_type": "button", "drift": "decoy-insertion", "target_id": "t-feedback", "candidate_count": 8, "truth_found_in_candidates": true, "truth_index": 0,
-    "baseline": { "pick_index": 0, "correct": true },
-    "jev": { "probs": null, "argmax_index": null, "top_prob": 0.63, "abstained": true, "correct": false, "wrong_confident": false, "latency_ms_total": null, "latency_ms_median": null, "tokens_in": null, "tokens_out": null } }
+  {
+    "id": "case-01",
+    "control_type": "button",
+    "drift": "decoy-insertion",
+    "target_id": "t-signin",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.81,
+        0.8,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.81,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 3854,
+      "latency_ms_median": 307.5,
+      "tokens_in": 8964,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-02",
+    "control_type": "button",
+    "drift": "class-rename",
+    "target_id": "t-menu-toggle",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.97,
+        0.03,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.97,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2637,
+      "latency_ms_median": 328.5,
+      "tokens_in": 8831,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-03",
+    "control_type": "link",
+    "drift": "wrap-in-div",
+    "target_id": "t-nav-products",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.97,
+        0.02,
+        0.03,
+        0.03,
+        0.01,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.97,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2624,
+      "latency_ms_median": 312.5,
+      "tokens_in": 8960,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-04",
+    "control_type": "link",
+    "drift": "node-swap",
+    "target_id": "t-nav-docs",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.76,
+        0.03,
+        0.03,
+        0.03,
+        0.02,
+        0.02,
+        0.04,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.76,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2557,
+      "latency_ms_median": 307,
+      "tokens_in": 8882,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-05",
+    "control_type": "link",
+    "drift": "wrap-in-div",
+    "target_id": "t-get-started",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.97,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.03
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.97,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2515,
+      "latency_ms_median": 310,
+      "tokens_in": 9184,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-06",
+    "control_type": "input",
+    "drift": "aria-text-edit",
+    "target_id": "t-search-input",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.97,
+        0.12,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.03,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.97,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2587,
+      "latency_ms_median": 326,
+      "tokens_in": 8958,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-07",
+    "control_type": "button",
+    "drift": "sibling-reorder",
+    "target_id": "t-search-submit",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.89,
+        0.02,
+        0.02,
+        0.21,
+        0.02,
+        0.06,
+        0.46,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.89,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2674,
+      "latency_ms_median": 317,
+      "tokens_in": 9031,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-08",
+    "control_type": "link",
+    "drift": "wrap-in-div",
+    "target_id": "t-contributor-bob",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.96,
+        0.03,
+        0.1,
+        0.15,
+        0.03,
+        0.02,
+        0.02,
+        0.03
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.96,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2604,
+      "latency_ms_median": 332.5,
+      "tokens_in": 9168,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-09",
+    "control_type": "link",
+    "drift": "class-rename",
+    "target_id": "t-footer-terms",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.97,
+        0.03,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.97,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2618,
+      "latency_ms_median": 322.5,
+      "tokens_in": 8959,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-10",
+    "control_type": "button",
+    "drift": "sibling-reorder",
+    "target_id": "t-feedback",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.96,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.01
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.96,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2540,
+      "latency_ms_median": 311.5,
+      "tokens_in": 8981,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-11",
+    "control_type": "button",
+    "drift": "aria-text-edit",
+    "target_id": "t-signin",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.97,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.97,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2469,
+      "latency_ms_median": 307.5,
+      "tokens_in": 8805,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-12",
+    "control_type": "button",
+    "drift": "decoy-insertion",
+    "target_id": "t-menu-toggle",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.76,
+        0.7,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.76,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2467,
+      "latency_ms_median": 304,
+      "tokens_in": 9027,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-13",
+    "control_type": "link",
+    "drift": "class-rename",
+    "target_id": "t-nav-products",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.98,
+        0.03,
+        0.03,
+        0.04,
+        0.02,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.98,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2602,
+      "latency_ms_median": 320.5,
+      "tokens_in": 8902,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-14",
+    "control_type": "link",
+    "drift": "decoy-insertion",
+    "target_id": "t-nav-docs",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 1,
+    "baseline": {
+      "pick_index": 0,
+      "correct": false
+    },
+    "jev": {
+      "probs": [
+        0.85,
+        0.79,
+        0.03,
+        0.03,
+        0.03,
+        0.02,
+        0.02,
+        0.03
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.85,
+      "abstained": false,
+      "correct": false,
+      "wrong_confident": true,
+      "latency_ms_total": 2688,
+      "latency_ms_median": 340,
+      "tokens_in": 9007,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-15",
+    "control_type": "link",
+    "drift": "aria-text-edit",
+    "target_id": "t-get-started",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.97,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.03
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.97,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2524,
+      "latency_ms_median": 304.5,
+      "tokens_in": 9082,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-16",
+    "control_type": "input",
+    "drift": "sibling-reorder",
+    "target_id": "t-search-input",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.96,
+        0.13,
+        0.02,
+        0.01,
+        0.01,
+        0.01,
+        0.03,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.96,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2535,
+      "latency_ms_median": 304.5,
+      "tokens_in": 8929,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-17",
+    "control_type": "button",
+    "drift": "node-swap",
+    "target_id": "t-search-submit",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.96,
+        0.16,
+        0.02,
+        0.02,
+        0.02,
+        0.07,
+        0.55,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.96,
+      "abstained": false,
+      "correct": true,
+      "wrong_confident": false,
+      "latency_ms_total": 2434,
+      "latency_ms_median": 299.5,
+      "tokens_in": 9114,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-18",
+    "control_type": "link",
+    "drift": "decoy-insertion",
+    "target_id": "t-contributor-bob",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 1,
+    "baseline": {
+      "pick_index": 0,
+      "correct": false
+    },
+    "jev": {
+      "probs": [
+        0.73,
+        0.68,
+        0.04,
+        0.11,
+        0.12,
+        0.03,
+        0.02,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.73,
+      "abstained": false,
+      "correct": false,
+      "wrong_confident": true,
+      "latency_ms_total": 2636,
+      "latency_ms_median": 329.5,
+      "tokens_in": 9297,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-19",
+    "control_type": "link",
+    "drift": "decoy-insertion",
+    "target_id": "t-footer-terms",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 1,
+    "baseline": {
+      "pick_index": 0,
+      "correct": false
+    },
+    "jev": {
+      "probs": [
+        0.6,
+        0.6,
+        0.04,
+        0.02,
+        0.02,
+        0.02,
+        0.02,
+        0.02
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.6,
+      "abstained": true,
+      "correct": false,
+      "wrong_confident": false,
+      "latency_ms_total": 2514,
+      "latency_ms_median": 305.5,
+      "tokens_in": 9094,
+      "tokens_out": 168
+    }
+  },
+  {
+    "id": "case-20",
+    "control_type": "button",
+    "drift": "decoy-insertion",
+    "target_id": "t-feedback",
+    "candidate_count": 8,
+    "truth_found_in_candidates": true,
+    "truth_index": 0,
+    "baseline": {
+      "pick_index": 0,
+      "correct": true
+    },
+    "jev": {
+      "probs": [
+        0.59,
+        0.5,
+        0.01,
+        0.01,
+        0.02,
+        0.02,
+        0.02,
+        0.01
+      ],
+      "argmax_index": 0,
+      "top_prob": 0.59,
+      "abstained": true,
+      "correct": false,
+      "wrong_confident": false,
+      "latency_ms_total": 2477,
+      "latency_ms_median": 306,
+      "tokens_in": 9197,
+      "tokens_out": 168
+    }
+  }
 ]
