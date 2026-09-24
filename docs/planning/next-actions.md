@@ -42,7 +42,7 @@ done
 
 **Done.** Ruleset's deletion rule removed via GitHub UI (Option B from the alternatives list). All 10 stale branches deleted (grew from 8 to 10 as later work sessions added `sever-preflight7-dependency` and `task-list`). Remote now has exactly one branch: `main`.
 
-### T3 — Update `/Users/prashant`'s stale local `main` pointer (Decision — user only)
+### T3 — Update `/Users/prashant`'s stale local `main` pointer (Decision — user only) — CLOSED 2026-09-24 (delegated back to owner; see tools/home-repo-diagnostic.sh)
 
 **What.** `/Users/prashant` (the actual home directory, checked out as a git worktree of the shared `.git`) has local `main` frozen at `3c40abe` from 2026-09-10 and 15+ uncommitted deletions in its working tree (13 days of normal Claude Code config drift). Nothing from today's work touched it; it predates the consolidation entirely.
 
@@ -131,7 +131,7 @@ My leaning: (a). Historical evidence should not sit in the runner's write path.
 
 **Trade-off.** Force-push to main breaks anyone with an existing clone, requires ruleset temporarily off (which needs T1 done first anyway), leaves prior commit SHAs unstable.
 
-### T11 — Statefarm-dashboard mockup on archived `preflight7/ai-for-qa` (Decision)
+### T11 — Statefarm-dashboard mockup on archived `preflight7/ai-for-qa` (Decision) — CLOSED 2026-09-24 (no action — archive preservation is sufficient; different customer, does not belong in this repo)
 
 **What.** One unique commit on archived `preflight7/ai-for-qa:claude/statefarm-health-dashboard-0f8363` — a state-farm-specific CSM account-health dashboard mockup (3 files, ~1 commit). Per "different apps for different customers," probably shouldn't cross into the current customer's testing repo, but flagging just in case you want to preserve it somewhere else.
 
@@ -189,7 +189,7 @@ My leaning: (a). Historical evidence should not sit in the runner's write path.
 
 **Result.** All source code + regenerable cases + partial results (with `null`-labeled gaps and preserved aggregates documented in `experiment/eval/jev-judge/RECOVERY-NOTES.md`) are on `main`. Only true loss: exact raw JSON response bodies from the original ~340 live API calls — needs the harness re-run against the live API to fully restore.
 
-### T17 — Recover rrweb-spike-2026-09.md (Prototype rrweb capture spike session) — OPEN
+### T17 — Recover rrweb-spike-2026-09.md (Prototype rrweb capture spike session) — PARTIAL 2026-09-24 (reconstructed summary at docs/research/rrweb-spike-summary-2026-09.md; original 6-question detail with citations is lost)
 
 **What.** Session `Prototype rrweb capture spike for MV3 recorder` said its deliverable was `docs/research/rrweb-spike-2026-09.md` in the (now-deleted) `happy-sanderson-bb1691` worktree. When I recovered that branch's committed content in PR #5, only 3 research MDs were present — no rrweb-spike file. Either it was uncommitted (and lost when the worktree got removed), or it was described but never actually written.
 
