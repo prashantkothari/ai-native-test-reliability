@@ -54,7 +54,7 @@ done
 
 ## Correctness gap (should ship before calling anything "done")
 
-### T4 — Full trial run against target_repo (Probe 2b) — Blocked on target-app decision
+### T4 — Full trial run against target_repo (Probe 2b) — DONE 2026-09-24 (n8n target)
 
 **What.** Every planning/review doc says the merge is verified *except* for the end-to-end trial run. `experiment/report/*.md` disagrees with itself about which target: older reports cite Excalidraw `e1bb9ff8`, phase-r/phase-s reports moved to n8n with no fixed pin recorded on main.
 
@@ -74,6 +74,8 @@ Then verify `logs/trials.jsonl` shows `sum(false_heal) == 0`.
 - n8n @ some SHA — what phase-s reports used; the exact SHA is not captured on main today
 
 Whichever you pick, the SHA should be recorded in a new committed file like `experiment/TARGET_REPO_SHA`, mirroring `SELFHEAL_VERSION`, so it's reproducible.
+
+**Done 2026-09-24.** Ran `node experiment/harness/phase_s_final.mjs` against a fresh boot of `npx n8n@1.60.0 start` on `localhost:5678`. 298 rows produced in `experiment/logs/phase_s.jsonl`; plugin false_heal 0/144 across Pass A L-cold + L-brain, naive PW 12/72 (17%), identity-oracle Pass C caught 1/2 imposters. See `experiment/report/phase_s_final.md` §4 for the full reproduction table. n8n version pinned via `npx n8n@1.60.0` — no separate `TARGET_REPO_SHA` file needed since the target is an npm package.
 
 ### T5 — Wire `npm test` in `experiment/package.json` (Doable) — DONE 2026-09-24
 

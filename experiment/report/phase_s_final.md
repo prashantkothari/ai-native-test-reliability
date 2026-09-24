@@ -114,3 +114,23 @@ node harness/bundle-library.js
 node harness/phase_s_final.mjs
 cat logs/phase_s.jsonl | wc -l   # 298
 ```
+
+
+## Section 4 — Reproduction on 2026-09-24 (T4 verification)
+
+Ran `node experiment/harness/phase_s_final.mjs` on `main` (post-consolidation, vendored `experiment/self-heal/` at `SELFHEAL_VERSION=dc5a87f`), against a fresh boot of `npx n8n@1.60.0 start` on `localhost:5678` with the workflow-editor page.
+
+**Aggregate row (Pass A, 288 trials — reproduced verbatim):**
+
+| metric | S | N | L-cold | L-brain |
+|---|---:|---:|---:|---:|
+| heal (PASS) | 45/72 | 0/72 | 42/72 | 41/72 |
+| **false_heal on plugin (identity-verified wrong click)** | 0/72 | 12/72 (outcome=FALSE_HEAL) | **0/72** | **0/72** |
+| abstain / fail | 27/72 | 60/72 | 30/72 | 29/72 + 2 skipped-crash |
+
+**Pass B compounding:** ladder stayed L1 across all 6 runs — matches the original finding that `execute-workflow-button` under DR1 doesn't heal, so the ladder never has a PASS to promote on.
+
+**Pass C identity oracle:** 2/2 PW-alone silent bad clicks caught. Plugin caught 1/2 via identity oracle (execute-workflow-button), abstained on the other (workflow-save-button) — same split as the original.
+
+**Wall time:** 36 s (vs. 53 s originally quoted).
+**T4 verdict:** the consolidated repo reproduces the phase-s USP numbers end-to-end against a live n8n.
