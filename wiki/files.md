@@ -24,4 +24,6 @@ Scope: source files under `docs/` and `experiment/self-heal/`. Every non-README 
 
 | [docs/plans/self-heal-second-opinion-checker.md](../docs/plans/self-heal-second-opinion-checker.md) | Design plan for wiring a Jev second-opinion checker into the self-heal loop as a reject-only veto. Includes bake-off history. | built |
 
+| [docs/research/rrweb-spike-summary-2026-09.md](../docs/research/rrweb-spike-summary-2026-09.md) | Reconstructed summary of the rrweb MV3-recorder spike — Rank 2 verdict + 6-question findings. Original detail lost with the deleted worktree. | reconstructed |
+
 <!-- Add rows here as new source files land. Sync will flag missing entries. -->
