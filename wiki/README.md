@@ -1,6 +1,6 @@
 # Wiki — playwright_middleware
 
-Last-verified: 2026-09-21
+Last-verified: 2026-09-24
 Drift-open: no
 
 **Agents: read this file first.** This wiki is a compact, curated index of the repo.

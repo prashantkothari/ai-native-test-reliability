@@ -139,7 +139,7 @@ My leaning: (a). Historical evidence should not sit in the runner's write path.
 
 ## Repo-hygiene follow-ups (low priority, ship at your leisure)
 
-### T12 — Reconcile report/*.md internal contradictions
+### T12 — Reconcile report/*.md internal contradictions — DONE 2026-09-24 (via experiment/report/README.md)
 
 **What.** Reports cite `libSha: 599dca1c` while `SELFHEAL_VERSION` is now `dc5a87f` (see post-merge review §5 item 8). Reports also cite `logs/trials.jsonl:5-8` line ranges into a truncate-on-run file. Reading multiple reports in sequence exposes contradictions.
 
