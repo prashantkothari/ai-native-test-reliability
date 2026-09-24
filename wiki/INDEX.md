@@ -20,15 +20,24 @@ Plan to merge this repo with `prashantkothari/ai-for-qa`. Full-length docs live 
 5. [../docs/planning/redteam-pass.md](../docs/planning/redteam-pass.md) — independent-context subagent redteam over docs 1-4; 5 blockers identified
 6. [../docs/planning/merge-plan-v3.md](../docs/planning/merge-plan-v3.md) — **executable plan** (supersedes v2). All redteam blockers absorbed. 6 sessions: S0 audit → S6 archive.
 
-**Status of the merge (see wiki/CHANGELOG.md for detail):**
-- S0 (branch audit) — DONE. Canonical corrected: `chip-c-a1-scaffold` + `chip-d-legacy-target` merged (neither was ancestor of the other); `experiment-only` discarded (parallel lineage, wrong fork pin); `claude/ai-native-test-reliability-011333` was a strict ancestor of both, superseded.
-- S1 (branch consolidation) — DONE. `consolidated-main` built.
-- S2 (vendor + scrub) — DONE. Vendored from `dc5a87f` (not merge-plan-v3's assumed `599dca1c` — superseded by this branch's own "bump lib submodule" commits before this session started; `dc5a87f` is a strict superset). 33 files landed at `experiment/self-heal/` + `experiment/selfheal-core.js` (not repo-root — this branch nests everything under `experiment/`, unlike the flat layout the planning docs assumed).
-- S3 (wiring) — DONE. Full wiki scaffold + README/NOTICE landed, 3 new wiki-tests added,
-  10/10 wiki/tests/*.sh passing.
-- S4 (verification) — DONE except Probe 2b. Bundle byte-reproducibility confirmed against a
-  true pre-vendor baseline (fresh chip-c-a1-scaffold checkout with real submodule). Fresh-clone
-  smoke test passes. Probe 2b (full trial) deferred — needs user to confirm/provide the
-  target app checkout.
-- S5 (push to new remote) — pending: needs the target GitHub repo URL from the user.
-- S6 (archive ai-native-test-reliability) — pending, gated on S5.
+**Status (updated 2026-09-24):**
+
+The consolidation is complete and the repo is customer-usable. Everything mergeable by me alone
+is closed; a handful of tasks are held for the repo owner or genuinely deferred. See
+`docs/planning/next-actions.md` for the full task ledger (T1..T18).
+
+- Consolidation S0-S6 — DONE. `prashantkothari/ai-native-test-reliability` is the single
+  canonical repo; `preflight7/*` testing repos archived.
+- T1 (ruleset) + T2 (stale branch cleanup) — DONE, remote back to `main`-only.
+- T4 (end-to-end verification on n8n) — DONE. 298-trial harness reproduces `phase_s_final.md`
+  numbers exactly. Plugin false_heal 0/144, naive PW 17%.
+- T5 (`npm test`) + T14 (GitHub Actions CI) — DONE. Every push and PR runs wiki tests +
+  harness bundle + translate-locator tests.
+- T7 / T8 / T9 — DONE. `.claude/` kept + noted, trials.jsonl archived, MIT LICENSE landed.
+- T16 (jev-judge recovery) — DONE, both Phase 1 (code) and Phase 2 (live rerun with real
+  token/latency data).
+- Deferred with rationale: T6 (vendored-lib module tests), T10 (history rewrite for 6.1MB
+  trace zips), T13 (17 session archive clicks), T15 (weekly wiki-sync cron).
+- Owner's call: T3 (`/Users/prashant` home-dir drift), T11 (statefarm mockup on archived
+  preflight7/ai-for-qa), T17 (rrweb-spike doc if that session resurfaces).
+- Optional hygiene: T12 (report/*.md internal contradictions).
